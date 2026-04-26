@@ -27,6 +27,7 @@ public class TenantEntity {
     private Integer roomId;
     private String startDate;    // Ngày bắt đầu thuê
     private double deposit;      // Tiền đặt cọc
+    private Integer contractTerm; // Thời hạn hợp đồng (tháng)
 
     public TenantEntity(String name, String phone, String identityCard, String birthDate, String hometown, Integer roomId, String startDate, double deposit) {
         this.name = name;
@@ -66,6 +67,9 @@ public class TenantEntity {
     public double getDeposit() { return deposit; }
     public void setDeposit(double deposit) { this.deposit = deposit; }
 
+    public Integer getContractTerm() { return contractTerm; }
+    public void setContractTerm(Integer contractTerm) { this.contractTerm = contractTerm; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -76,11 +80,12 @@ public class TenantEntity {
                 Objects.equals(name, that.name) &&
                 Objects.equals(phone, that.phone) &&
                 Objects.equals(identityCard, that.identityCard) &&
-                Objects.equals(startDate, that.startDate);
+                Objects.equals(startDate, that.startDate) &&
+                Objects.equals(contractTerm, that.contractTerm);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, phone, identityCard, startDate, deposit);
+        return Objects.hash(id, name, phone, identityCard, startDate, deposit, contractTerm);
     }
 }

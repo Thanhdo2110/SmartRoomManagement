@@ -18,8 +18,8 @@ import com.example.smartroommanagement.data.entity.UserEntity;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-// TĂNG VERSION LÊN 7 ĐỂ TRÁNH LỖI INTEGRITY SAU KHI THÊM TIỆN ÍCH VÀO BILLENTITY
-@Database(entities = {RoomEntity.class, TenantEntity.class, BillEntity.class, UserEntity.class}, version = 7, exportSchema = false)
+// TĂNG VERSION LÊN 8 VÌ ĐÃ THÊM TRƯỜNG contractTerm VÀO TenantEntity
+@Database(entities = {RoomEntity.class, TenantEntity.class, BillEntity.class, UserEntity.class}, version = 8, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract RoomDao roomDao();
     public abstract TenantDao tenantDao();

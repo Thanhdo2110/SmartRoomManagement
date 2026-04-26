@@ -5,9 +5,11 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
 import com.example.smartroommanagement.data.entity.RoomEntity;
+import com.example.smartroommanagement.data.entity.RoomWithTenants;
 
 import java.util.List;
 
@@ -27,4 +29,8 @@ public interface RoomDao {
 
     @Query("SELECT * FROM rooms WHERE id = :id")
     LiveData<RoomEntity> getRoomById(int id);
+
+    @Transaction
+    @Query("SELECT * FROM rooms ORDER BY name ASC")
+    LiveData<List<RoomWithTenants>> getRoomsWithTenants();
 }

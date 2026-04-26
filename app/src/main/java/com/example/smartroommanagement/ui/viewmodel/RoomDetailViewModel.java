@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import com.example.smartroommanagement.data.entity.BillEntity;
 import com.example.smartroommanagement.data.entity.BillWithRoomAndTenant;
 import com.example.smartroommanagement.data.entity.RoomEntity;
+import com.example.smartroommanagement.data.entity.RoomWithTenants;
 import com.example.smartroommanagement.data.entity.TenantEntity;
 import com.example.smartroommanagement.data.entity.TenantWithRoom;
 import com.example.smartroommanagement.data.repository.BillRepository;
@@ -84,5 +85,9 @@ public class RoomDetailViewModel extends AndroidViewModel {
 
     public void deleteBill(BillEntity bill) {
         billRepository.delete(bill);
+    }
+
+    public LiveData<List<RoomWithTenants>> getRoomsWithTenants() {
+        return roomRepository.getRoomsWithTenants();
     }
 }

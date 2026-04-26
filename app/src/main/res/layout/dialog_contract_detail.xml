@@ -165,9 +165,16 @@
                         android:textColor="@android:color/black" />
 
                     <TextView
+                        android:id="@+id/text_contract_term_info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="5. Các khoản phí dịch vụ khác (Điện, Nước, Wifi...) sẽ được tính theo chỉ số tiêu dùng thực tế và thông báo hàng tháng qua hóa đơn điện tử."
+                        android:text="5. Thời hạn hợp đồng: 12 tháng. Nếu bên B trả phòng trước thời hạn trên sẽ mất toàn bộ số tiền đặt cọc đã nêu ở mục 3."
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="6. Các khoản phí dịch vụ khác (Điện, Nước, Wifi...) sẽ được tính theo chỉ số tiêu dùng thực tế và thông báo hàng tháng qua hóa đơn điện tử."
                         android:textColor="@android:color/black" />
 
                     <TextView

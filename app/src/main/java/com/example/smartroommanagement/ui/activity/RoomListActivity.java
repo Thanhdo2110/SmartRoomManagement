@@ -1,6 +1,7 @@
 package com.example.smartroommanagement.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -30,6 +31,7 @@ public class RoomListActivity extends AppCompatActivity {
     private RoomAdapter adapter;
     private List<RoomEntity> allRooms = new ArrayList<>();
     private String currentSearchQuery = "";
+    private String currentFilterStatus = "All"; // "All", "Occupied", "Vacant"
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,81 @@ public class RoomListActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {}
         });
+
+        // Thiết lập lọc theo Category
+        binding.cardFilterAll.setOnClickListener(v -> {
+            currentFilterStatus = "All";
+            updateFilterUI();
+            filterRooms();
+        });
+
+        binding.cardFilterOccupied.setOnClickListener(v -> {
+            currentFilterStatus = "Occupied";
+            updateFilterUI();
+            filterRooms();
+        });
+
+        binding.cardFilterVacant.setOnClickListener(v -> {
+            currentFilterStatus = "Vacant";
+            updateFilterUI();
+            filterRooms();
+        });
+
+        // Khởi tạo UI filter ban đầu
+        updateFilterUI();
+    }
+
+    private void updateFilterUI() {
+        // Màu mặc định (Chưa chọn)
+        int defaultStroke = Color.parseColor("#F1F5F9");
+        int defaultBg = Color.parseColor("#FFFFFF");
+        int defaultText = Color.parseColor("#64748B");
+
+        // Màu Indigo (Chọn "Tất cả" hoặc "Đã thuê")
+        int indigoStroke = Color.parseColor("#6366F1");
+        int indigoBg = Color.parseColor("#EEF2FF");
+        int indigoText = Color.parseColor("#6366F1");
+
+        // Màu Green (Chọn "Trống")
+        int greenStroke = Color.parseColor("#10B981");
+        int greenBg = Color.parseColor("#ECFDF5");
+        int greenText = Color.parseColor("#10B981");
+
+        // Reset tất cả về mặc định
+        binding.cardFilterAll.setStrokeColor(defaultStroke);
+        binding.cardFilterAll.setCardBackgroundColor(defaultBg);
+        binding.textAllLabel.setTextColor(defaultText);
+
+        binding.cardFilterOccupied.setStrokeColor(defaultStroke);
+        binding.cardFilterOccupied.setCardBackgroundColor(defaultBg);
+        binding.textOccupiedCount.setTextColor(defaultText);
+        binding.labelOccupied.setTextColor(defaultText);
+
+        binding.cardFilterVacant.setStrokeColor(defaultStroke);
+        binding.cardFilterVacant.setCardBackgroundColor(defaultBg);
+        binding.textVacantCount.setTextColor(defaultText);
+        binding.labelVacant.setTextColor(defaultText);
+
+        // Highlight mục đang được chọn
+        switch (currentFilterStatus) {
+            case "All":
+                binding.cardFilterAll.setStrokeColor(indigoStroke);
+                binding.cardFilterAll.setCardBackgroundColor(indigoBg);
+                binding.textAllLabel.setTextColor(indigoText);
+                break;
+            case "Occupied":
+                binding.cardFilterOccupied.setStrokeColor(indigoStroke);
+                binding.cardFilterOccupied.setCardBackgroundColor(indigoBg);
+                binding.textOccupiedCount.setTextColor(indigoText);
+                binding.labelOccupied.setTextColor(indigoText);
+                break;
+            case "Vacant":
+                binding.cardFilterVacant.setStrokeColor(greenStroke);
+                binding.cardFilterVacant.setCardBackgroundColor(greenBg);
+                binding.textVacantCount.setTextColor(greenText);
+                binding.labelVacant.setTextColor(greenText);
+                break;
+        }
     }
 
     private void setupViewModel() {
@@ -84,17 +161,37 @@ public class RoomListActivity extends AppCompatActivity {
         viewModel.getAllRooms().observe(this, rooms -> {
             if (rooms != null) {
                 allRooms = new ArrayList<>(rooms);
+                updateStatistics(rooms);
                 filterRooms();
             }
         });
     }
 
+    private void updateStatistics(List<RoomEntity> rooms) {
+        long occupied = rooms.stream().filter(r -> "Đã thuê".equalsIgnoreCase(r.getStatus())).count();
+        long vacant = rooms.size() - occupied;
+        
+        binding.textOccupiedCount.setText(String.valueOf(occupied));
+        binding.textVacantCount.setText(String.valueOf(vacant));
+    }
+
     private void filterRooms() {
-        List<RoomEntity> filteredList;
-        if (TextUtils.isEmpty(currentSearchQuery)) {
-            filteredList = new ArrayList<>(allRooms);
-        } else {
-            filteredList = allRooms.stream()
+        List<RoomEntity> filteredList = new ArrayList<>(allRooms);
+
+        // 1. Lọc theo Category trạng thái
+        if ("Occupied".equals(currentFilterStatus)) {
+            filteredList = filteredList.stream()
+                    .filter(room -> "Đã thuê".equalsIgnoreCase(room.getStatus()))
+                    .collect(Collectors.toList());
+        } else if ("Vacant".equals(currentFilterStatus)) {
+            filteredList = filteredList.stream()
+                    .filter(room -> "Trống".equalsIgnoreCase(room.getStatus()))
+                    .collect(Collectors.toList());
+        }
+
+        // 2. Lọc theo tìm kiếm tên phòng
+        if (!TextUtils.isEmpty(currentSearchQuery)) {
+            filteredList = filteredList.stream()
                     .filter(room -> room.getName().toLowerCase().contains(currentSearchQuery))
                     .collect(Collectors.toList());
         }
@@ -105,9 +202,9 @@ public class RoomListActivity extends AppCompatActivity {
         if (filteredList.isEmpty()) {
             binding.layoutEmptyState.setVisibility(View.VISIBLE);
             binding.recyclerViewRooms.setVisibility(View.GONE);
-            if (!TextUtils.isEmpty(currentSearchQuery)) {
+            if (!TextUtils.isEmpty(currentSearchQuery) || !"All".equals(currentFilterStatus)) {
                 binding.textEmptyTitle.setText("Không tìm thấy kết quả");
-                binding.textEmptyDesc.setText("Thử tìm với tên phòng khác");
+                binding.textEmptyDesc.setText("Thử đổi bộ lọc hoặc tìm tên phòng khác");
                 binding.btnAddFirstRoom.setVisibility(View.GONE);
             } else {
                 binding.textEmptyTitle.setText("Chưa có phòng nào");

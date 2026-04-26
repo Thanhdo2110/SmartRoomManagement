@@ -241,6 +241,10 @@ public class RoomDetailActivity extends AppCompatActivity {
         cb.textContractDeposit.setText("3. Tiền đặt cọc: " + FinanceUtils.formatCurrency(tenant.getDeposit()));
         cb.textContractStartDate.setText("4. Thời hạn thuê bắt đầu từ ngày: " + (TextUtils.isEmpty(tenant.getStartDate()) ? "...................." : tenant.getStartDate()));
 
+        // Hiển thị thông tin thời hạn hợp đồng và ràng buộc mất cọc
+        int term = tenant.getContractTerm() != null ? tenant.getContractTerm() : 12; // Mặc định 12 tháng nếu chưa nhập
+        cb.textContractTermInfo.setText("5. Thời hạn hợp đồng: " + term + " tháng. Nếu bên B trả phòng trước thời hạn trên sẽ mất toàn bộ số tiền đặt cọc đã nêu ở mục 3.");
+
         cb.btnCloseContract.setOnClickListener(v -> dialog.dismiss());
         cb.btnShareContract.setOnClickListener(v -> shareViewAsImage(cb.cardContractPaper));
 
@@ -407,6 +411,9 @@ public class RoomDetailActivity extends AppCompatActivity {
             db.editStartDate.setText(existingTenant.getStartDate());
             db.editTenantHometown.setText(existingTenant.getHometown());
             db.editTenantBirthdate.setText(existingTenant.getBirthDate());
+            if (existingTenant.getContractTerm() != null) {
+                db.editContractTerm.setText(String.valueOf(existingTenant.getContractTerm()));
+            }
         }
 
         new AlertDialog.Builder(this)
@@ -420,6 +427,7 @@ public class RoomDetailActivity extends AppCompatActivity {
                 String startDate = db.editStartDate.getText().toString().trim();
                 String hometown = db.editTenantHometown.getText().toString().trim();
                 String birthdate = db.editTenantBirthdate.getText().toString().trim();
+                String termStr = db.editContractTerm.getText().toString().trim();
 
                 if (TextUtils.isEmpty(name) || TextUtils.isEmpty(phone)) {
                     Toast.makeText(this, "Vui lòng nhập tên và số điện thoại", Toast.LENGTH_SHORT).show();
@@ -427,9 +435,11 @@ public class RoomDetailActivity extends AppCompatActivity {
                 }
 
                 double deposit = FinanceUtils.parseFormattedCurrency(depositStr);
+                Integer contractTerm = TextUtils.isEmpty(termStr) ? 12 : Integer.parseInt(termStr);
 
                 if (existingTenant == null) {
                     TenantEntity newTenant = new TenantEntity(name, phone, identity, birthdate, hometown, roomId, startDate, deposit);
+                    newTenant.setContractTerm(contractTerm);
                     viewModel.addTenant(newTenant);
                     
                     if (currentRoom != null) {
@@ -444,6 +454,7 @@ public class RoomDetailActivity extends AppCompatActivity {
                     existingTenant.setStartDate(startDate);
                     existingTenant.setHometown(hometown);
                     existingTenant.setBirthDate(birthdate);
+                    existingTenant.setContractTerm(contractTerm);
                     viewModel.updateTenant(existingTenant);
                 }
             })

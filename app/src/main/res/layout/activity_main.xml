@@ -339,9 +339,9 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Cài đặt -->
+                <!-- Hợp đồng (Icon mới: ic_contract_note) -->
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_settings"
+                    android:id="@+id/card_contracts"
                     style="@style/Widget.Material3.CardView.Elevated"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -361,19 +361,19 @@
                             android:layout_height="64dp"
                             app:cardCornerRadius="20dp"
                             app:cardElevation="0dp"
-                            android:backgroundTint="#F1F5F9">
+                            android:backgroundTint="#F5F3FF">
                             <ImageView
                                 android:layout_width="32dp"
                                 android:layout_height="32dp"
                                 android:layout_gravity="center"
-                                android:src="@drawable/ic_launcher_foreground"
-                                app:tint="#64748B" />
+                                android:src="@drawable/ic_contract_note"
+                                app:tint="#8B5CF6" />
                         </com.google.android.material.card.MaterialCardView>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
-                            android:text="Cài đặt"
+                            android:text="Hợp đồng"
                             android:textColor="#1E293B"
                             android:textStyle="bold" />
                     </LinearLayout>

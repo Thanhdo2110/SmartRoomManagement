@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import com.example.smartroommanagement.data.AppDatabase;
 import com.example.smartroommanagement.data.dao.RoomDao;
 import com.example.smartroommanagement.data.entity.RoomEntity;
+import com.example.smartroommanagement.data.entity.RoomWithTenants;
 
 import java.util.List;
 
@@ -38,5 +39,9 @@ public class RoomRepository {
 
     public LiveData<RoomEntity> getRoomById(int id) {
         return roomDao.getRoomById(id);
+    }
+
+    public LiveData<List<RoomWithTenants>> getRoomsWithTenants() {
+        return roomDao.getRoomsWithTenants();
     }
 }

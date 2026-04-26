@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.smartroommanagement.databinding.ActivityMainBinding;
 import com.example.smartroommanagement.ui.activity.BillManagementActivity;
+import com.example.smartroommanagement.ui.activity.ContractManagementActivity;
 import com.example.smartroommanagement.ui.activity.RoomListActivity;
 import com.example.smartroommanagement.ui.activity.TenantListActivity;
 import com.example.smartroommanagement.ui.activity.StatisticsActivity;
@@ -68,8 +69,8 @@ public class MainActivity extends AppCompatActivity {
         binding.cardStatistics.setOnClickListener(v -> 
             startActivity(new Intent(this, StatisticsActivity.class)));
 
-        binding.cardSettings.setOnClickListener(v -> 
-            showToast("Tính năng Cài đặt đang được hoàn thiện"));
+        binding.cardContracts.setOnClickListener(v -> 
+            startActivity(new Intent(this, ContractManagementActivity.class)));
 
         binding.cardProfile.setOnClickListener(v -> 
             showToast("Tính năng Hồ sơ đang được hoàn thiện"));

@@ -28,6 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="4dp"
             android:layout_marginBottom="12dp"
             app:hintEnabled="false"
             app:startIconDrawable="@android:drawable/ic_menu_search"
@@ -44,6 +45,121 @@
                 android:paddingVertical="10dp"
                 android:textSize="14sp" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Bộ lọc Trạng thái (Category Chips) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="16dp"
+            android:baselineAligned="false">
+
+            <!-- Tất cả -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_filter_all"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="6dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="#6366F1"
+                android:backgroundTint="#EEF2FF"
+                android:clickable="true"
+                android:focusable="true">
+                <TextView
+                    android:id="@+id/text_all_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingVertical="10dp"
+                    android:text="Tất cả"
+                    android:textColor="#6366F1"
+                    android:textStyle="bold"
+                    android:textSize="13sp" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Đã thuê -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_filter_occupied"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="3dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="#F1F5F9"
+                android:backgroundTint="#FFFFFF"
+                android:clickable="true"
+                android:focusable="true">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingVertical="10dp">
+                    <TextView
+                        android:id="@+id/label_occupied"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Đã thuê"
+                        android:textColor="#64748B"
+                        android:textSize="13sp" />
+                    <TextView
+                        android:id="@+id/text_occupied_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="0"
+                        android:textColor="#EF4444"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Trống -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_filter_vacant"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="6dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="#F1F5F9"
+                android:backgroundTint="#FFFFFF"
+                android:clickable="true"
+                android:focusable="true">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingVertical="10dp">
+                    <TextView
+                        android:id="@+id/label_vacant"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Trống"
+                        android:textColor="#64748B"
+                        android:textSize="13sp" />
+                    <TextView
+                        android:id="@+id/text_vacant_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="0"
+                        android:textColor="#10B981"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -65,22 +181,23 @@
             app:tint="#64748B" />
 
         <TextView
+            android:id="@+id/text_empty_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="Không tìm thấy phòng"
-            android:id="@+id/text_empty_title"
             android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
             android:textColor="#64748B" />
 
         <TextView
+            android:id="@+id/text_empty_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:text="Thử tìm kiếm với tên phòng khác"
-            android:id="@+id/text_empty_desc"
-            android:textColor="#94A3B8" />
+            android:text="Thử đổi bộ lọc hoặc tìm tên phòng khác"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:textColor="#94A3B8"
+            android:gravity="center" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_add_first_room"
