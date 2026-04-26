@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F3F4F6">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- "Hóa đơn giấy" container -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_bill_paper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="4dp"
+                app:cardElevation="4dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="HÓA ĐƠN TIỀN PHÒNG"
+                        android:textColor="@android:color/black"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="100dp"
+                        android:layout_height="2dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="24dp"
+                        android:background="@android:color/black" />
+
+                    <GridLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:columnCount="2"
+                        android:rowCount="3">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Phòng:"
+                            android:textColor="#4B5563"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/text_bill_room"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:text="P.101"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Tháng:"
+                            android:textColor="#4B5563"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/text_bill_month"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginTop="8dp"
+                            android:text="05/2024"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Khách thuê:"
+                            android:textColor="#4B5563"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/text_bill_tenant"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginTop="8dp"
+                            android:text="Nguyễn Văn A"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp" />
+                    </GridLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:background="#E5E7EB" />
+
+                    <!-- Chi tiết các mục -->
+                    <LinearLayout
+                        android:id="@+id/layout_bill_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <!-- Các mục sẽ được render động ở đây hoặc cố định bên dưới -->
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Tiền phòng"
+                                android:textColor="@android:color/black" />
+                            <TextView
+                                android:id="@+id/text_price_room"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:text="0đ"
+                                android:textColor="@android:color/black" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/row_elec"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp">
+                            <TextView
+                                android:id="@+id/label_elec"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Tiền điện"
+                                android:textColor="@android:color/black" />
+                            <TextView
+                                android:id="@+id/text_price_elec"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:text="0đ"
+                                android:textColor="@android:color/black" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/row_water"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp">
+                            <TextView
+                                android:id="@+id/label_water"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Tiền nước"
+                                android:textColor="@android:color/black" />
+                            <TextView
+                                android:id="@+id/text_price_water"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:text="0đ"
+                                android:textColor="@android:color/black" />
+                        </RelativeLayout>
+
+                        <!-- Thêm các hàng mới -->
+                        <RelativeLayout
+                            android:id="@+id/row_laundry"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:visibility="gone">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Máy giặt"
+                                android:textColor="@android:color/black" />
+                            <TextView
+                                android:id="@+id/text_price_laundry"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:text="0đ"
+                                android:textColor="@android:color/black" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/row_trash"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:visibility="gone">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Tiền rác"
+                                android:textColor="@android:color/black" />
+                            <TextView
+                                android:id="@+id/text_price_trash"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:text="0đ"
+                                android:textColor="@android:color/black" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/row_wifi"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:visibility="gone">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Wifi / Internet"
+                                android:textColor="@android:color/black" />
+                            <TextView
+                                android:id="@+id/text_price_wifi"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:text="0đ"
+                                android:textColor="@android:color/black" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/row_other"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:visibility="gone">
+                            <TextView
+                                android:id="@+id/label_other"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Phí khác"
+                                android:textColor="@android:color/black" />
+                            <TextView
+                                android:id="@+id/text_price_other"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:text="0đ"
+                                android:textColor="@android:color/black" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:background="@android:color/black" />
+
+                    <!-- Tổng cộng -->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="24dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="TỔNG CỘNG"
+                            android:textColor="@android:color/black"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/text_total_amount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:text="0đ"
+                            android:textColor="@android:color/black"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+
+                    <!-- QR Code Section -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Quét mã để thanh toán"
+                        android:textColor="#6B7280"
+                        android:textSize="14sp"
+                        android:layout_marginBottom="8dp" />
+
+                    <FrameLayout
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:layout_gravity="center"
+                        android:background="#F9FAFB">
+                        <ImageView
+                            android:id="@+id/img_bill_qr"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="8dp"
+                            android:scaleType="fitCenter" />
+                        <ProgressBar
+                            android:id="@+id/progress_qr_bill"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="24dp"
+                        android:text="Cảm ơn bạn đã tin tưởng!"
+                        android:textColor="#9CA3AF"
+                        android:textSize="12sp"
+                        android:textStyle="italic" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="32dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_share_bill"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:text="Chia sẻ"
+                    app:icon="@android:drawable/ic_menu_share" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_close_bill"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Đóng" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

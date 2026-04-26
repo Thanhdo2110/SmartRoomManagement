@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thông tin cơ bản"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"
+            android:textColor="?attr/colorPrimary"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tháng/Năm (ví dụ: 05/2024)"
+            android:layout_marginBottom="16dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_bill_month"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tiền thuê phòng (VNĐ)"
+            android:layout_marginBottom="16dp"
+            app:startIconDrawable="@android:drawable/ic_menu_myplaces">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_room_price_at_bill"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDDDDD"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- GIỮ NGUYÊN PHẦN ĐIỆN -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chỉ số điện"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"
+            android:textColor="#E91E63"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:baselineAligned="false">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Số ký điện"
+                android:layout_marginEnd="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_electricity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Đơn giá điện">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_electricity_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="4000"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <!-- GIỮ NGUYÊN PHẦN NƯỚC -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chỉ số nước"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="#2196F3"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:baselineAligned="false">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Số khối nước"
+                android:layout_marginEnd="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_water"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Đơn giá nước">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_water_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="10000"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDDDDD"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- THÊM TIỆN ÍCH Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tiện ích &amp; Phí dịch vụ"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"
+            android:textColor="#10B981"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Máy giặt"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_laundry_fee"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Rác">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_trash_fee"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Wifi / Internet"
+            android:layout_marginBottom="16dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_wifi_fee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phí khác"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"
+            android:textColor="#64748B"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Tên phí (vd: Gửi xe)"
+                android:layout_marginEnd="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_other_fee_note"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Số tiền">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_other_fee"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    android:backgroundTint="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header: Avatar, Name, Phone, Room -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                app:cardCornerRadius="28dp"
+                app:cardElevation="0dp"
+                android:backgroundTint="#EFF6FF">
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_tenants_premium"
+                    app:tint="#2563EB" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text_tenant_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nguyễn Văn A"
+                    android:textColor="#1E293B"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_tenant_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0987.654.321"
+                    android:textColor="#3B82F6"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/text_room_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Phòng 101"
+                android:background="#EEF2FF"
+                android:textColor="#6366F1"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#F1F5F9"
+            android:layout_marginVertical="16dp" />
+
+        <!-- Details Grid -->
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:rowCount="3"
+            android:alignmentMode="alignMargins">
+
+            <!-- CCCD -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_marginBottom="12dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Số CCCD"
+                    android:textColor="#94A3B8"
+                    android:textSize="11sp"
+                    android:textAllCaps="true" />
+                <TextView
+                    android:id="@+id/text_tenant_cccd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="012345678912"
+                    android:textColor="#334155"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Birthday -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_marginBottom="12dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ngày sinh"
+                    android:textColor="#94A3B8"
+                    android:textSize="11sp"
+                    android:textAllCaps="true" />
+                <TextView
+                    android:id="@+id/text_tenant_birthdate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="01/01/1990"
+                    android:textColor="#334155"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Start Date -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_marginBottom="12dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ngày bắt đầu"
+                    android:textColor="#94A3B8"
+                    android:textSize="11sp"
+                    android:textAllCaps="true" />
+                <TextView
+                    android:id="@+id/text_tenant_start_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20/05/2024"
+                    android:textColor="#334155"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Hometown -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_marginBottom="12dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Quê quán"
+                    android:textColor="#94A3B8"
+                    android:textSize="11sp"
+                    android:textAllCaps="true" />
+                <TextView
+                    android:id="@+id/text_tenant_hometown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hà Nội"
+                    android:textColor="#334155"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Deposit -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="2"
+                android:layout_columnSpan="2"
+                android:padding="12dp"
+                android:background="#F0FDF4"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="TIỀN ĐẶT CỌC"
+                    android:textColor="#166534"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/text_tenant_deposit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2.000.000 đ"
+                    android:textColor="#15803D"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </GridLayout>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

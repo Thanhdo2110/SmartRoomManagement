@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F3F4F6">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- "Hợp đồng giấy" container -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_contract_paper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="2dp"
+                app:cardElevation="4dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Độc lập - Tự do - Hạnh phúc"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="1dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="4dp"
+                        android:background="@android:color/black" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="32dp"
+                        android:text="HỢP ĐỒNG THUÊ PHÒNG TRỌ"
+                        android:textColor="@android:color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/text_contract_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="8dp"
+                        android:text="Hôm nay, ngày... tháng... năm..."
+                        android:textColor="@android:color/black"
+                        android:textSize="13sp"
+                        android:textStyle="italic" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="BÊN CHO THUÊ (BÊN A):"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/text_landlord_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Đại diện: Chủ nhà trọ SmartRoom\nĐịa chỉ: Hệ thống Quản lý Phòng trọ Thông minh"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="BÊN THUÊ PHÒNG (BÊN B):"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/text_contract_tenant_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ông/Bà: Nguyễn Văn A"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:id="@+id/text_contract_tenant_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="CCCD số: 0123456789"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:id="@+id/text_contract_tenant_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Số điện thoại: 0987654321"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:id="@+id/text_contract_tenant_hometown"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Quê quán: Hà Nội"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="NỘI DUNG THỎA THUẬN:"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/text_contract_room_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="1. Bên A đồng ý cho bên B thuê phòng số: P.101"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:id="@+id/text_contract_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="2. Giá thuê phòng: 2.500.000 VNĐ/tháng"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:id="@+id/text_contract_deposit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="3. Tiền đặt cọc: 1.000.000 VNĐ"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:id="@+id/text_contract_start_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="4. Thời hạn thuê bắt đầu từ ngày: 01/01/2024"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="5. Các khoản phí dịch vụ khác (Điện, Nước, Wifi...) sẽ được tính theo chỉ số tiêu dùng thực tế và thông báo hàng tháng qua hóa đơn điện tử."
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="ĐIỀU KHOẢN CHUNG:"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="- Hai bên cam kết thực hiện đúng các thỏa thuận trên.\n- Bên thuê phải giữ gìn vệ sinh, an ninh trật tự chung.\n- Khi chấm dứt hợp đồng phải báo trước ít nhất 30 ngày."
+                        android:textColor="@android:color/black"
+                        android:textSize="13sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="40dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="ĐẠI DIỆN BÊN A"
+                                android:textColor="@android:color/black"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="(Ký và ghi rõ họ tên)"
+                                android:textColor="@android:color/black"
+                                android:textSize="11sp" />
+
+                            <View
+                                android:layout_width="wrap_content"
+                                android:layout_height="80dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="ĐẠI DIỆN BÊN B"
+                                android:textColor="@android:color/black"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="(Ký và ghi rõ họ tên)"
+                                android:textColor="@android:color/black"
+                                android:textSize="11sp" />
+
+                            <View
+                                android:layout_width="wrap_content"
+                                android:layout_height="80dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="32dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_share_contract"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:text="Chia sẻ hợp đồng"
+                    app:icon="@android:drawable/ic_menu_share" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_close_contract"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Đóng" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

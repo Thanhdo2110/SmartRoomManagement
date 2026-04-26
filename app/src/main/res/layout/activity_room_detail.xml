@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8FAFC">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:title="Chi tiết phòng"
+            app:titleCentered="true"
+            app:titleTextAppearance="@style/TextAppearance.Material3.TitleLarge" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="100dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Thông tin phòng -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="4dp"
+                android:backgroundTint="#FFFFFF"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="20dp">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="0dp"
+                        android:backgroundTint="#EEF2FF">
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_room_premium"
+                            app:tint="#6366F1" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="16dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/text_detail_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Phòng 101"
+                            android:textColor="#1E293B"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/text_detail_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="2,500,000 VNĐ / tháng"
+                            android:textColor="#6366F1"
+                            android:textStyle="bold"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/text_detail_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_icon_container"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="6dp"
+                        android:text="Trống"
+                        android:textColor="#10B981"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Section Khách thuê & Hợp đồng -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:layout_marginBottom="12dp"
+                android:text="Thông tin khách thuê &amp; Hợp đồng"
+                android:textColor="#334155"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="2dp"
+                android:backgroundTint="#FFFFFF"
+                app:strokeWidth="1dp"
+                app:strokeColor="#E2E8F0">
+
+                <LinearLayout
+                    android:id="@+id/layout_tenant_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/avatar_container"
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            app:cardCornerRadius="28dp"
+                            app:cardElevation="0dp"
+                            android:backgroundTint="#F8FAFC">
+                            <ImageView
+                                android:id="@+id/img_tenant_avatar"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_tenants_premium"
+                                app:tint="#64748B" />
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@id/avatar_container"
+                            android:layout_toStartOf="@+id/btn_call_tenant"
+                            android:layout_marginStart="16dp"
+                            android:layout_centerVertical="true"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/text_tenant_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Chưa có khách thuê"
+                                android:textColor="#1E293B"
+                                android:textSize="17sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/text_tenant_phone"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="Liên hệ: --"
+                                android:textColor="#64748B"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <ImageButton
+                            android:id="@+id/btn_call_tenant"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@android:drawable/stat_sys_phone_call"
+                            android:visibility="gone"
+                            app:tint="#10B981" />
+                    </RelativeLayout>
+
+                    <!-- Row Thông tin ngày thuê -->
+                    <LinearLayout
+                        android:id="@+id/layout_rental_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:background="#F8FAFC"
+                        android:padding="12dp"
+                        android:visibility="gone"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:src="@android:drawable/ic_menu_today"
+                                app:tint="#6366F1" />
+                            <TextView
+                                android:id="@+id/text_tenant_start_date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:text="Ngày thuê: --/--/----"
+                                android:textColor="#334155"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:src="@android:drawable/ic_menu_save"
+                                app:tint="#F59E0B" />
+                            <TextView
+                                android:id="@+id/text_tenant_deposit"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:text="Tiền cọc: 0 VNĐ"
+                                android:textColor="#B45309"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="16dp"
+                        android:background="#F1F5F9" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_add_tenant"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:text="Quản lý khách thuê"
+                        app:cornerRadius="16dp"
+                        app:icon="@android:drawable/ic_input_add" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Section Hóa đơn -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:layout_marginBottom="12dp"
+                android:text="Lịch sử hóa đơn"
+                android:textColor="#334155"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_bills"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab_add_bill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="24dp"
+        android:text="Tạo hóa đơn"
+        android:textColor="@android:color/white"
+        app:backgroundTint="#6366F1"
+        app:icon="@drawable/ic_bills_premium"
+        app:iconTint="@android:color/white"
+        app:elevation="6dp" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp"
+    android:backgroundTint="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp"
+                android:backgroundTint="#F0FDF4">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_bills_premium"
+                    app:tint="#16A34A" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text_bill_room_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Phòng 101"
+                    android:textColor="#1E293B"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_bill_month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tháng 05/2024"
+                    android:textColor="#64748B"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/text_bill_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chưa thanh toán"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp"
+                android:background="#FEF2F2"
+                android:textColor="#EF4444"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#F1F5F9"
+            android:layout_marginVertical="12dp" />
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2">
+
+            <TextView
+                android:id="@+id/text_bill_electricity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:text="Điện: -- số"
+                android:textColor="#475569"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/text_bill_water"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:text="Nước: -- khối"
+                android:textColor="#475569"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/text_bill_tenant"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_marginTop="4dp"
+                android:text="Người thuê: --"
+                android:textColor="#475569"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/text_bill_total"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_marginTop="4dp"
+                android:text="Tổng: --"
+                android:textColor="#1E293B"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+        </GridLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:gravity="end">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_share_bill"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chia sẻ"
+                app:icon="@android:drawable/ic_menu_share" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_pay_qr"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="Quét QR"
+                app:icon="@android:drawable/ic_menu_camera" />
+
+            <!-- Nút Xác nhận thanh toán (Kích thước chuẩn) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_mark_paid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="Thanh toán"
+                android:backgroundTint="#10B981" />
+
+            <!-- Nút Hủy thanh toán (Kích thước nhỏ - Sẽ được ẩn/hiện trong Adapter) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_cancel_paid"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginStart="4dp"
+                android:paddingHorizontal="8dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="Hủy"
+                android:textSize="11sp"
+                android:visibility="gone"
+                android:backgroundTint="#EF4444" />
+        </LinearLayout>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

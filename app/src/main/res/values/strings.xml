@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Quản Lý Phòng Trọ</string>
+    <string name="add_room">Thêm phòng mới</string>
+    <string name="save">Lưu</string>
+    <string name="cancel">Hủy</string>
+    <string name="tenant_name_hint">Tên khách thuê</string>
+    <string name="tenant_phone_hint">Số điện thoại</string>
+    <string name="start_date_hint">Ngày bắt đầu (dd/mm/yyyy)</string>
+    <string name="bill_month_hint">Tháng/Năm (mm/yyyy)</string>
+    <string name="elec_usage_hint">Số điện tiêu thụ (kWh)</string>
+    <string name="water_usage_hint">Số khối nước (m3)</string>
+    <string name="room_placeholder">Phòng 101</string>
+    <string name="price_placeholder">0 VNĐ</string>
+    <string name="status_empty">Trống</string>
+    <string name="status_occupied">Đã thuê</string>
+    <string name="icon_desc">Room Icon</string>
+</resources>

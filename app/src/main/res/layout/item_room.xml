@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardCornerRadius="24dp"
+    app:cardElevation="4dp"
+    app:strokeWidth="0dp"
+    android:backgroundTint="#FFFFFF"
+    app:rippleColor="#F1F5F9">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="20dp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_icon_container"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            android:backgroundTint="#EEF2FF">
+            <ImageView
+                android:id="@+id/icon_room"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_room_premium"
+                app:tint="#6366F1" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text_room_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#1E293B"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:text="Phòng 101" />
+
+            <TextView
+                android:id="@+id/text_room_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="#6366F1"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                tools:text="2.500.000 VNĐ / tháng" />
+        </LinearLayout>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:chipCornerRadius="12dp"
+            app:chipBackgroundColor="#ECFDF5"
+            android:textColor="#10B981"
+            app:chipStrokeWidth="0dp"
+            tools:text="Trống" />
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
