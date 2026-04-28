@@ -33,6 +33,8 @@
         <activity android:name=".ui.activity.BillManagementActivity" />
         <activity android:name=".ui.activity.StatisticsActivity" />
         <activity android:name=".ui.activity.ContractManagementActivity" />
+        <activity android:name=".ui.activity.EditNotesActivity" />
+        <activity android:name=".ui.activity.ProfileActivity" />
         <activity android:name=".MainActivity" />
 
         <provider

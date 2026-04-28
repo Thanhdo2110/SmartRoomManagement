@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.smartroommanagement.databinding.ActivityMainBinding;
 import com.example.smartroommanagement.ui.activity.BillManagementActivity;
 import com.example.smartroommanagement.ui.activity.ContractManagementActivity;
+import com.example.smartroommanagement.ui.activity.EditNotesActivity;
 import com.example.smartroommanagement.ui.activity.RoomListActivity;
 import com.example.smartroommanagement.ui.activity.TenantListActivity;
 import com.example.smartroommanagement.ui.activity.StatisticsActivity;
@@ -72,11 +73,12 @@ public class MainActivity extends AppCompatActivity {
         binding.cardContracts.setOnClickListener(v -> 
             startActivity(new Intent(this, ContractManagementActivity.class)));
 
-        binding.cardProfile.setOnClickListener(v -> 
-            showToast("Tính năng Hồ sơ đang được hoàn thiện"));
+        // CHUYỂN TỪ HỒ SƠ SANG GHI CHÚ PRO
+        binding.cardNotes.setOnClickListener(v -> 
+            startActivity(new Intent(this, EditNotesActivity.class)));
 
         binding.toolbar.setNavigationOnClickListener(v -> {
-            showToast("Menu đang cập nhật");
+            showToast("Smart Room Management v1.0 PRO");
         });
     }
 

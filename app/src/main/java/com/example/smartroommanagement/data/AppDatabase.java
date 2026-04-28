@@ -7,10 +7,12 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.example.smartroommanagement.data.dao.BillDao;
+import com.example.smartroommanagement.data.dao.NoteDao;
 import com.example.smartroommanagement.data.dao.RoomDao;
 import com.example.smartroommanagement.data.dao.TenantDao;
 import com.example.smartroommanagement.data.dao.UserDao;
 import com.example.smartroommanagement.data.entity.BillEntity;
+import com.example.smartroommanagement.data.entity.NoteEntity;
 import com.example.smartroommanagement.data.entity.RoomEntity;
 import com.example.smartroommanagement.data.entity.TenantEntity;
 import com.example.smartroommanagement.data.entity.UserEntity;
@@ -18,13 +20,13 @@ import com.example.smartroommanagement.data.entity.UserEntity;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-// TĂNG VERSION LÊN 8 VÌ ĐÃ THÊM TRƯỜNG contractTerm VÀO TenantEntity
-@Database(entities = {RoomEntity.class, TenantEntity.class, BillEntity.class, UserEntity.class}, version = 8, exportSchema = false)
+@Database(entities = {RoomEntity.class, TenantEntity.class, BillEntity.class, UserEntity.class, NoteEntity.class}, version = 9, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract RoomDao roomDao();
     public abstract TenantDao tenantDao();
     public abstract BillDao billDao();
     public abstract UserDao userDao();
+    public abstract NoteDao noteDao();
 
     private static volatile AppDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;

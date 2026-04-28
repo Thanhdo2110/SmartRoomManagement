@@ -40,7 +40,8 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin" />
+                app:layout_collapseMode="pin"
+                app:navigationIcon="@android:drawable/ic_menu_myplaces" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -167,7 +168,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:text="Tiện ích hệ thống"
+                android:text="Tính năng hệ thống"
                 android:textColor="#334155"
                 android:textAppearance="?attr/textAppearanceTitleMedium"
                 android:textStyle="bold" />
@@ -339,7 +340,7 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Hợp đồng (Icon mới: ic_contract_note) -->
+                <!-- Hợp đồng -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_contracts"
                     style="@style/Widget.Material3.CardView.Elevated"
@@ -379,9 +380,9 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Hồ sơ -->
+                <!-- Ghi chú (THAY THẾ HỒ SƠ) -->
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_profile"
+                    android:id="@+id/card_notes"
                     style="@style/Widget.Material3.CardView.Elevated"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -401,19 +402,19 @@
                             android:layout_height="64dp"
                             app:cardCornerRadius="20dp"
                             app:cardElevation="0dp"
-                            android:backgroundTint="#E0F2FE">
+                            android:backgroundTint="#FFF1F2">
                             <ImageView
                                 android:layout_width="32dp"
                                 android:layout_height="32dp"
                                 android:layout_gravity="center"
-                                android:src="@drawable/ic_launcher_foreground"
-                                app:tint="#0EA5E9" />
+                                android:src="@android:drawable/ic_menu_edit"
+                                app:tint="#F43F5E" />
                         </com.google.android.material.card.MaterialCardView>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
-                            android:text="Hồ sơ"
+                            android:text="Ghi chú"
                             android:textColor="#1E293B"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -436,7 +437,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Nâng cấp phiên bản Pro"
+                        android:text="Ghi chú &amp; Đồng bộ Cloud"
                         android:textColor="@android:color/white"
                         android:textStyle="bold"
                         android:textSize="18sp" />
@@ -444,7 +445,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
-                        android:text="Trải nghiệm đầy đủ tính năng đồng bộ cloud"
+                        android:text="Lưu trữ mọi thông tin quan trọng ngay tại đây"
                         android:textColor="#E2E8F0"
                         android:textSize="12sp" />
                 </RelativeLayout>
