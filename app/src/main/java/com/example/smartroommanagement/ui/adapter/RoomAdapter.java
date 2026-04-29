@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,7 +74,7 @@ public class RoomAdapter extends ListAdapter<RoomEntity, RoomAdapter.RoomViewHol
     }
 
     class RoomViewHolder extends RecyclerView.ViewHolder {
-        private final TextView name, price;
+        private final TextView name, price, description;
         private final Chip statusChip;
         private final ImageView iconRoom;
         private final MaterialCardView iconContainer;
@@ -82,6 +83,7 @@ public class RoomAdapter extends ListAdapter<RoomEntity, RoomAdapter.RoomViewHol
             super(itemView);
             name = itemView.findViewById(R.id.text_room_name);
             price = itemView.findViewById(R.id.text_room_price);
+            description = itemView.findViewById(R.id.text_room_description);
             statusChip = itemView.findViewById(R.id.chip_status);
             iconRoom = itemView.findViewById(R.id.icon_room);
             iconContainer = itemView.findViewById(R.id.card_icon_container);
@@ -104,9 +106,16 @@ public class RoomAdapter extends ListAdapter<RoomEntity, RoomAdapter.RoomViewHol
         }
 
         public void bind(RoomEntity room) {
-            Context context = itemView.getContext();
             name.setText(room.getName());
             price.setText(FinanceUtils.formatCurrency(room.getBasePrice()));
+            
+            // Ghi chú nho nhỏ
+            if (TextUtils.isEmpty(room.getDescription())) {
+                description.setVisibility(View.GONE);
+            } else {
+                description.setVisibility(View.VISIBLE);
+                description.setText(room.getDescription());
+            }
             
             // Làm cho chữ trạng thái in hoa và đậm hơn
             statusChip.setText(room.getStatus().toUpperCase());

@@ -57,18 +57,31 @@
                 android:id="@+id/text_room_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="2dp"
                 android:textColor="#6366F1"
                 android:textStyle="bold"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 tools:text="2.500.000 VNĐ / tháng" />
+
+            <!-- Ghi chú nho nhỏ bên dưới -->
+            <TextView
+                android:id="@+id/text_room_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="#64748B"
+                android:textSize="12sp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:fontFamily="sans-serif"
+                tools:text="Cửa sổ hướng Đông, có điều hòa..." />
         </LinearLayout>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:textSize="11sp"
             android:textStyle="bold"
             app:chipCornerRadius="12dp"
             app:chipBackgroundColor="#ECFDF5"

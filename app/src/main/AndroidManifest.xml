@@ -30,6 +30,7 @@
         <activity android:name=".ui.activity.RoomListActivity" />
         <activity android:name=".ui.activity.RoomDetailActivity" />
         <activity android:name=".ui.activity.TenantListActivity" />
+        <activity android:name=".ui.activity.TenantDetailActivity" />
         <activity android:name=".ui.activity.BillManagementActivity" />
         <activity android:name=".ui.activity.StatisticsActivity" />
         <activity android:name=".ui.activity.ContractManagementActivity" />

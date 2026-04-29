@@ -7,6 +7,7 @@ import android.os.Looper;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.smartroommanagement.MainActivity;
 import com.example.smartroommanagement.R;
+import com.example.smartroommanagement.util.SessionManager;
 
 public class SplashActivity extends AppCompatActivity {
     @Override
@@ -15,10 +16,13 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            // ĐÃ TẠM ẨN ĐĂNG NHẬP ĐỂ TEST NHANH
-            // Sau khi hoàn thiện, hãy đổi lại thành LoginActivity.class
-            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            SessionManager sessionManager = new SessionManager(this);
+            if (sessionManager.isLoggedIn()) {
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            } else {
+                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+            }
             finish();
-        }, 500); // Giảm thời gian chờ xuống 0.5 giây để vào app nhanh hơn
+        }, 2000); // Tăng thời gian chờ lên 2 giây để người dùng thấy Splash Screen
     }
 }

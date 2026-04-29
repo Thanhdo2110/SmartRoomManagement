@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
         setupGreeting();
         setupDashboard();
+        setupStatLabels();
         observeStatistics();
     }
 
@@ -43,6 +44,12 @@ public class MainActivity extends AppCompatActivity {
         binding.textGreeting.setText(greeting);
     }
 
+    private void setupStatLabels() {
+        binding.statTotal.textLabel.setText("Tổng số");
+        binding.statOccupied.textLabel.setText("Đã thuê");
+        binding.statVacant.textLabel.setText("Phòng trống");
+    }
+
     private void observeStatistics() {
         roomViewModel.getAllRooms().observe(this, rooms -> {
             if (rooms != null) {
@@ -50,9 +57,9 @@ public class MainActivity extends AppCompatActivity {
                 long occupied = rooms.stream().filter(r -> "Đã thuê".equals(r.getStatus())).count();
                 long vacant = total - occupied;
 
-                binding.textTotalRooms.setText(String.valueOf(total));
-                binding.textOccupiedRooms.setText(String.valueOf(occupied));
-                binding.textVacantRooms.setText(String.valueOf(vacant));
+                binding.statTotal.textValue.setText(String.valueOf(total));
+                binding.statOccupied.textValue.setText(String.valueOf(occupied));
+                binding.statVacant.textValue.setText(String.valueOf(vacant));
             }
         });
     }
@@ -73,13 +80,11 @@ public class MainActivity extends AppCompatActivity {
         binding.cardContracts.setOnClickListener(v -> 
             startActivity(new Intent(this, ContractManagementActivity.class)));
 
-        // CHUYỂN TỪ HỒ SƠ SANG GHI CHÚ PRO
+        // Nút Ghi chú
         binding.cardNotes.setOnClickListener(v -> 
             startActivity(new Intent(this, EditNotesActivity.class)));
 
-        binding.toolbar.setNavigationOnClickListener(v -> {
-            showToast("Smart Room Management v1.0 PRO");
-        });
+        binding.toolbar.setNavigationOnClickListener(v -> showToast("Smart Room Management v1.0 PRO"));
     }
 
     private void showToast(String message) {

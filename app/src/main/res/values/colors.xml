@@ -10,6 +10,14 @@
     <color name="text_secondary">#64748B</color>
     <color name="background_light">#F8FAFC</color>
 
+    <!-- New Indigo Theme -->
+    <color name="primary_indigo">#312E81</color>
+    <color name="surface_background">#F8FAFC</color>
+    <color name="text_main">#1E293B</color>
+    <color name="text_sub">#64748B</color>
+    <color name="accent_blue">#3B82F6</color>
+    <color name="status_green">#10B981</color>
+
     <!-- Legacy colors for compatibility -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
