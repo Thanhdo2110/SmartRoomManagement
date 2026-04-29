@@ -4,12 +4,16 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
+import com.example.smartroommanagement.data.AppDatabase;
 import com.example.smartroommanagement.data.entity.BillEntity;
 import com.example.smartroommanagement.data.entity.BillWithRoomAndTenant;
 import com.example.smartroommanagement.data.entity.RoomEntity;
 import com.example.smartroommanagement.data.entity.RoomWithTenants;
 import com.example.smartroommanagement.data.entity.TenantEntity;
 import com.example.smartroommanagement.data.entity.TenantWithRoom;
+import com.example.smartroommanagement.data.entity.UserEntity;
 import com.example.smartroommanagement.data.repository.BillRepository;
 import com.example.smartroommanagement.data.repository.RoomRepository;
 import com.example.smartroommanagement.data.repository.TenantRepository;
@@ -19,12 +23,29 @@ public class RoomDetailViewModel extends AndroidViewModel {
     private final RoomRepository roomRepository;
     private final TenantRepository tenantRepository;
     private final BillRepository billRepository;
+    private final AppDatabase db;
 
     public RoomDetailViewModel(@NonNull Application application) {
         super(application);
         roomRepository = new RoomRepository(application);
         tenantRepository = new TenantRepository(application);
         billRepository = new BillRepository(application);
+        db = AppDatabase.getDatabase(application);
+    }
+
+    public LiveData<UserEntity> getUserById(int userId) {
+        MutableLiveData<UserEntity> userLiveData = new MutableLiveData<>();
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            UserEntity user = db.userDao().getUserById(userId);
+            userLiveData.postValue(user);
+        });
+        return userLiveData;
+    }
+
+    public void updateUser(UserEntity user) {
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            db.userDao().update(user);
+        });
     }
 
     public LiveData<RoomEntity> getRoomById(int id) {

@@ -22,6 +22,7 @@ import com.example.smartroommanagement.data.entity.BillEntity;
 import com.example.smartroommanagement.data.entity.BillWithRoomAndTenant;
 import com.example.smartroommanagement.data.entity.RoomEntity;
 import com.example.smartroommanagement.data.entity.TenantEntity;
+import com.example.smartroommanagement.data.entity.UserEntity;
 import com.example.smartroommanagement.databinding.ActivityRoomDetailBinding;
 import com.example.smartroommanagement.databinding.DialogAddBillBinding;
 import com.example.smartroommanagement.databinding.DialogAddTenantBinding;
@@ -49,6 +50,7 @@ public class RoomDetailActivity extends AppCompatActivity {
     private int roomId;
     private RoomEntity currentRoom;
     private TenantEntity currentTenant;
+    private UserEntity currentUser;
     private boolean isOptimisticUpdateActive = false;
     private SessionManager sessionManager;
 
@@ -200,7 +202,15 @@ public class RoomDetailActivity extends AppCompatActivity {
         db.textTotalAmount.setText(FinanceUtils.formatCurrency(item.bill.getTotalAmount()));
 
         String description = "Thanh toan " + (item.room != null ? item.room.getName() : "phong") + " thang " + item.bill.getMonthYear();
-        String qrUrl = PaymentUtils.getQrUrl(item.bill.getTotalAmount(), description);
+        
+        // SỬ DỤNG THÔNG TIN NGÂN HÀNG CỦA CHỦ TRỌ
+        String qrUrl;
+        if (currentUser != null && !TextUtils.isEmpty(currentUser.getAccountNo())) {
+            qrUrl = PaymentUtils.getQrUrl(item.bill.getTotalAmount(), description, 
+                    currentUser.getBankId(), currentUser.getAccountNo(), currentUser.getAccountName());
+        } else {
+            qrUrl = PaymentUtils.getQrUrl(item.bill.getTotalAmount(), description);
+        }
 
         Glide.with(this)
                 .load(qrUrl)
@@ -366,6 +376,13 @@ public class RoomDetailActivity extends AppCompatActivity {
                 billAdapter.submitList(new ArrayList<>(bills));
             }
         });
+
+        // LẤY THÔNG TIN NGƯỜI DÙNG ĐỂ PRE-FILL QR
+        viewModel.getUserById(sessionManager.getUserId()).observe(this, user -> {
+            if (user != null) {
+                currentUser = user;
+            }
+        });
     }
 
     private void showTenantOptionsDialog(TenantEntity tenant) {
@@ -478,6 +495,13 @@ public class RoomDetailActivity extends AppCompatActivity {
         FinanceUtils.addCurrencyFormatter(db.editWifiFee);
         FinanceUtils.addCurrencyFormatter(db.editOtherFee);
 
+        // Pre-fill bank info from currentUser
+        if (currentUser != null) {
+            db.editBankId.setText(currentUser.getBankId());
+            db.editAccountNo.setText(currentUser.getAccountNo());
+            db.editAccountName.setText(currentUser.getAccountName());
+        }
+
         if (existingBill != null) {
             db.editBillMonth.setText(existingBill.getMonthYear());
             db.editElectricity.setText(String.valueOf(existingBill.getElectricityUsage()));
@@ -513,6 +537,11 @@ public class RoomDetailActivity extends AppCompatActivity {
                 String otherStr = db.editOtherFee.getText().toString().trim();
                 String otherNote = db.editOtherFeeNote.getText().toString().trim();
 
+                // Bank info fields
+                String bankId = db.editBankId.getText().toString().trim();
+                String accountNo = db.editAccountNo.getText().toString().trim();
+                String accountName = db.editAccountName.getText().toString().trim();
+
                 if (TextUtils.isEmpty(roomPriceStr) || TextUtils.isEmpty(electricityStr) || 
                     TextUtils.isEmpty(waterStr) || TextUtils.isEmpty(month)) {
                     Toast.makeText(this, "Vui lòng nhập đầy đủ các thông tin", Toast.LENGTH_SHORT).show();
@@ -533,6 +562,17 @@ public class RoomDetailActivity extends AppCompatActivity {
 
                     double total = roomPrice + (elecUsage * elecPrice) + (waterUsage * waterPrice) + laundry + trash + wifi + other;
                     
+                    // CẬP NHẬT THÔNG TIN NGÂN HÀNG CỦA CHỦ TRỌ (NẾU CÓ THAY ĐỔI)
+                    if (currentUser != null) {
+                        boolean changed = false;
+                        if (!TextUtils.equals(bankId, currentUser.getBankId())) { currentUser.setBankId(bankId); changed = true; }
+                        if (!TextUtils.equals(accountNo, currentUser.getAccountNo())) { currentUser.setAccountNo(accountNo); changed = true; }
+                        if (!TextUtils.equals(accountName, currentUser.getAccountName())) { currentUser.setAccountName(accountName); changed = true; }
+                        if (changed) {
+                            viewModel.updateUser(currentUser);
+                        }
+                    }
+
                     if (existingBill == null) {
                         int userId = sessionManager.getUserId();
                         BillEntity newBill = new BillEntity(roomId, month, elecUsage, waterUsage, total, false, userId);

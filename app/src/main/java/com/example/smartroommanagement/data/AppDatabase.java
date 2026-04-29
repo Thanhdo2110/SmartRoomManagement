@@ -20,8 +20,8 @@ import com.example.smartroommanagement.data.entity.UserEntity;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-// TĂNG LÊN VERSION 10 ĐỂ ĐẢM BẢO PHÂN TÁCH DỮ LIỆU USERID HOÀN TOÀN
-@Database(entities = {RoomEntity.class, TenantEntity.class, BillEntity.class, UserEntity.class, NoteEntity.class}, version = 10, exportSchema = false)
+// Tăng lên version 11 vì đã thay đổi schema của UserEntity (thêm thông tin ngân hàng)
+@Database(entities = {RoomEntity.class, TenantEntity.class, BillEntity.class, UserEntity.class, NoteEntity.class}, version = 11, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract RoomDao roomDao();
     public abstract TenantDao tenantDao();
