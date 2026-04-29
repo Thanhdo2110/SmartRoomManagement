@@ -27,10 +27,10 @@ public interface TenantDao {
     @Query("SELECT * FROM tenants WHERE roomId = :roomId")
     LiveData<List<TenantEntity>> getTenantsByRoom(int roomId);
 
-    @Query("SELECT * FROM tenants")
-    LiveData<List<TenantEntity>> getAllTenants();
+    @Query("SELECT * FROM tenants WHERE userId = :userId")
+    LiveData<List<TenantEntity>> getAllTenants(int userId);
 
     @Transaction
-    @Query("SELECT * FROM tenants")
-    LiveData<List<TenantWithRoom>> getAllTenantsWithRoom();
+    @Query("SELECT * FROM tenants WHERE userId = :userId")
+    LiveData<List<TenantWithRoom>> getAllTenantsWithRoom(int userId);
 }

@@ -20,7 +20,8 @@ import com.example.smartroommanagement.data.entity.UserEntity;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {RoomEntity.class, TenantEntity.class, BillEntity.class, UserEntity.class, NoteEntity.class}, version = 9, exportSchema = false)
+// TĂNG LÊN VERSION 10 ĐỂ ĐẢM BẢO PHÂN TÁCH DỮ LIỆU USERID HOÀN TOÀN
+@Database(entities = {RoomEntity.class, TenantEntity.class, BillEntity.class, UserEntity.class, NoteEntity.class}, version = 10, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract RoomDao roomDao();
     public abstract TenantDao tenantDao();
@@ -39,7 +40,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     AppDatabase.class, "smart_room_db")
-                            .fallbackToDestructiveMigration() // Xóa dữ liệu cũ và tạo lại bảng mới khi đổi cấu trúc
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }

@@ -24,13 +24,13 @@ public interface RoomDao {
     @Delete
     void delete(RoomEntity room);
 
-    @Query("SELECT * FROM rooms ORDER BY name ASC")
-    LiveData<List<RoomEntity>> getAllRooms();
+    @Query("SELECT * FROM rooms WHERE userId = :userId ORDER BY name ASC")
+    LiveData<List<RoomEntity>> getAllRooms(int userId);
 
     @Query("SELECT * FROM rooms WHERE id = :id")
     LiveData<RoomEntity> getRoomById(int id);
 
     @Transaction
-    @Query("SELECT * FROM rooms ORDER BY name ASC")
-    LiveData<List<RoomWithTenants>> getRoomsWithTenants();
+    @Query("SELECT * FROM rooms WHERE userId = :userId ORDER BY name ASC")
+    LiveData<List<RoomWithTenants>> getRoomsWithTenants(int userId);
 }

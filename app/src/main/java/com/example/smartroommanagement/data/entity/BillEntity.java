@@ -33,14 +33,17 @@ public class BillEntity {
     private double wifiFee;       // Phí wifi
     private double otherFee;      // Phí khác
     private String otherFeeNote;  // Chú thích cho phí khác
+    
+    private int userId; // ID của chủ trọ sở hữu hóa đơn này
 
-    public BillEntity(int roomId, String monthYear, double electricityUsage, double waterUsage, double totalAmount, boolean isPaid) {
+    public BillEntity(int roomId, String monthYear, double electricityUsage, double waterUsage, double totalAmount, boolean isPaid, int userId) {
         this.roomId = roomId;
         this.monthYear = monthYear;
         this.electricityUsage = electricityUsage;
         this.waterUsage = waterUsage;
         this.totalAmount = totalAmount;
         this.isPaid = isPaid;
+        this.userId = userId;
     }
 
     @Ignore
@@ -58,6 +61,7 @@ public class BillEntity {
         this.wifiFee = other.wifiFee;
         this.otherFee = other.otherFee;
         this.otherFeeNote = other.otherFeeNote;
+        this.userId = other.userId;
     }
 
     public int getId() { return id; }
@@ -98,4 +102,7 @@ public class BillEntity {
 
     public String getOtherFeeNote() { return otherFeeNote; }
     public void setOtherFeeNote(String otherFeeNote) { this.otherFeeNote = otherFeeNote; }
+
+    public int getUserId() { return userId; }
+    public void setUserId(int userId) { this.userId = userId; }
 }

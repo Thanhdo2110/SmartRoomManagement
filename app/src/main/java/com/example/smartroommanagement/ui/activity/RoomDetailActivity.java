@@ -31,6 +31,7 @@ import com.example.smartroommanagement.ui.adapter.BillAdapter;
 import com.example.smartroommanagement.ui.viewmodel.RoomDetailViewModel;
 import com.example.smartroommanagement.util.FinanceUtils;
 import com.example.smartroommanagement.util.PaymentUtils;
+import com.example.smartroommanagement.util.SessionManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -49,6 +50,7 @@ public class RoomDetailActivity extends AppCompatActivity {
     private RoomEntity currentRoom;
     private TenantEntity currentTenant;
     private boolean isOptimisticUpdateActive = false;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,7 @@ public class RoomDetailActivity extends AppCompatActivity {
         binding = ActivityRoomDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        sessionManager = new SessionManager(this);
         roomId = getIntent().getIntExtra(EXTRA_ROOM_ID, -1);
         if (roomId == -1) {
             Toast.makeText(this, "Không tìm thấy thông tin phòng", Toast.LENGTH_SHORT).show();
@@ -438,7 +441,8 @@ public class RoomDetailActivity extends AppCompatActivity {
                 Integer contractTerm = TextUtils.isEmpty(termStr) ? 12 : Integer.parseInt(termStr);
 
                 if (existingTenant == null) {
-                    TenantEntity newTenant = new TenantEntity(name, phone, identity, birthdate, hometown, roomId, startDate, deposit);
+                    int userId = sessionManager.getUserId();
+                    TenantEntity newTenant = new TenantEntity(name, phone, identity, birthdate, hometown, roomId, startDate, deposit, userId);
                     newTenant.setContractTerm(contractTerm);
                     viewModel.addTenant(newTenant);
                     
@@ -530,7 +534,8 @@ public class RoomDetailActivity extends AppCompatActivity {
                     double total = roomPrice + (elecUsage * elecPrice) + (waterUsage * waterPrice) + laundry + trash + wifi + other;
                     
                     if (existingBill == null) {
-                        BillEntity newBill = new BillEntity(roomId, month, elecUsage, waterUsage, total, false);
+                        int userId = sessionManager.getUserId();
+                        BillEntity newBill = new BillEntity(roomId, month, elecUsage, waterUsage, total, false, userId);
                         newBill.setLaundryFee(laundry);
                         newBill.setTrashFee(trash);
                         newBill.setWifiFee(wifi);

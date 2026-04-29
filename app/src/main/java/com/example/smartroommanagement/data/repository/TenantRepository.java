@@ -6,14 +6,17 @@ import com.example.smartroommanagement.data.AppDatabase;
 import com.example.smartroommanagement.data.dao.TenantDao;
 import com.example.smartroommanagement.data.entity.TenantEntity;
 import com.example.smartroommanagement.data.entity.TenantWithRoom;
+import com.example.smartroommanagement.util.SessionManager;
 import java.util.List;
 
 public class TenantRepository {
     private final TenantDao tenantDao;
+    private final SessionManager sessionManager;
 
     public TenantRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         tenantDao = db.tenantDao();
+        sessionManager = new SessionManager(application);
     }
 
     public LiveData<List<TenantEntity>> getTenantsByRoom(int roomId) {
@@ -21,15 +24,18 @@ public class TenantRepository {
     }
 
     public LiveData<List<TenantEntity>> getAllTenants() {
-        return tenantDao.getAllTenants();
+        return tenantDao.getAllTenants(sessionManager.getUserId());
     }
 
     public LiveData<List<TenantWithRoom>> getAllTenantsWithRoom() {
-        return tenantDao.getAllTenantsWithRoom();
+        return tenantDao.getAllTenantsWithRoom(sessionManager.getUserId());
     }
 
     public void insert(TenantEntity tenant) {
-        AppDatabase.databaseWriteExecutor.execute(() -> tenantDao.insert(tenant));
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            tenant.setUserId(sessionManager.getUserId());
+            tenantDao.insert(tenant);
+        });
     }
 
     public void update(TenantEntity tenant) {

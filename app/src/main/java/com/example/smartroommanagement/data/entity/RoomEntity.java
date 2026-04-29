@@ -12,6 +12,7 @@ public class RoomEntity {
     private double basePrice;
     private String status; // "Trống", "Đã thuê"
     private String description;
+    private int userId; // ID của chủ trọ sở hữu phòng này
 
     public RoomEntity(String name, double basePrice, String status, String description) {
         this.name = name;
@@ -35,12 +36,16 @@ public class RoomEntity {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
+    public int getUserId() { return userId; }
+    public void setUserId(int userId) { this.userId = userId; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RoomEntity that = (RoomEntity) o;
         return id == that.id &&
+                userId == that.userId &&
                 Double.compare(that.basePrice, basePrice) == 0 &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(status, that.status) &&
@@ -49,6 +54,6 @@ public class RoomEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, basePrice, status, description);
+        return Objects.hash(id, name, basePrice, status, description, userId);
     }
 }

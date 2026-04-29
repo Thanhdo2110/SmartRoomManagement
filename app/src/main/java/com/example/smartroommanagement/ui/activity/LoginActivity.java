@@ -10,10 +10,12 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.smartroommanagement.MainActivity;
 import com.example.smartroommanagement.databinding.ActivityLoginBinding;
 import com.example.smartroommanagement.ui.viewmodel.AuthViewModel;
+import com.example.smartroommanagement.util.SessionManager;
 
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
     private AuthViewModel authViewModel;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +24,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+        sessionManager = new SessionManager(this);
 
         setupObservers();
         setupListeners();
@@ -30,6 +33,9 @@ public class LoginActivity extends AppCompatActivity {
     private void setupObservers() {
         authViewModel.getUserLiveData().observe(this, user -> {
             binding.progressBar.setVisibility(View.GONE);
+            // Lưu userId vào SessionManager khi đăng nhập thành công
+            sessionManager.createLoginSession(user.getId(), user.getUsername(), user.getPassword());
+
             startActivity(new Intent(this, MainActivity.class));
             finish();
         });

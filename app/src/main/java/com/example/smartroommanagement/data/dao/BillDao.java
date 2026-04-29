@@ -32,8 +32,8 @@ public interface BillDao {
     LiveData<List<BillWithRoomAndTenant>> getBillsWithDetailsByRoom(int roomId);
 
     @Transaction
-    @Query("SELECT * FROM bills ORDER BY id DESC")
-    LiveData<List<BillWithRoomAndTenant>> getAllBillsWithDetails();
+    @Query("SELECT * FROM bills WHERE userId = :userId ORDER BY id DESC")
+    LiveData<List<BillWithRoomAndTenant>> getAllBillsWithDetails(int userId);
 
     @Transaction
     @Query("SELECT * FROM bills WHERE id = :billId")
