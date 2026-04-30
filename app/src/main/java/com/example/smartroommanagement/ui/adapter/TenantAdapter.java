@@ -3,6 +3,7 @@ package com.example.smartroommanagement.ui.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
@@ -16,13 +17,22 @@ import java.util.Locale;
 public class TenantAdapter extends ListAdapter<TenantWithRoom, TenantAdapter.TenantViewHolder> {
 
     private OnTenantClickListener listener;
+    private OnTenantMoreClickListener moreClickListener;
 
     public interface OnTenantClickListener {
         void onTenantClick(TenantWithRoom tenantWithRoom);
     }
 
+    public interface OnTenantMoreClickListener {
+        void onTenantMoreClick(TenantWithRoom tenantWithRoom);
+    }
+
     public void setOnTenantClickListener(OnTenantClickListener listener) {
         this.listener = listener;
+    }
+
+    public void setOnTenantMoreClickListener(OnTenantMoreClickListener listener) {
+        this.moreClickListener = listener;
     }
 
     public TenantAdapter() {
@@ -53,15 +63,25 @@ public class TenantAdapter extends ListAdapter<TenantWithRoom, TenantAdapter.Ten
     public void onBindViewHolder(@NonNull TenantViewHolder holder, int position) {
         TenantWithRoom item = getItem(position);
         holder.bind(item);
+        
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onTenantClick(item);
             }
         });
+
+        if (holder.btnMore != null) {
+            holder.btnMore.setOnClickListener(v -> {
+                if (moreClickListener != null) {
+                    moreClickListener.onTenantMoreClick(item);
+                }
+            });
+        }
     }
 
     static class TenantViewHolder extends RecyclerView.ViewHolder {
         TextView name, phone, room, cccd, startDate, hometown, deposit, birthDate;
+        ImageButton btnMore;
 
         public TenantViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -73,6 +93,7 @@ public class TenantAdapter extends ListAdapter<TenantWithRoom, TenantAdapter.Ten
             hometown = itemView.findViewById(R.id.text_tenant_hometown);
             deposit = itemView.findViewById(R.id.text_tenant_deposit);
             birthDate = itemView.findViewById(R.id.text_tenant_birthdate);
+            btnMore = itemView.findViewById(R.id.btn_more_tenant);
         }
 
         public void bind(TenantWithRoom item) {

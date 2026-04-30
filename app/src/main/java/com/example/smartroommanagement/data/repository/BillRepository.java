@@ -20,11 +20,11 @@ public class BillRepository {
     }
 
     public LiveData<List<BillEntity>> getBillsByRoom(int roomId) {
-        return billDao.getBillsByRoom(roomId);
+        return billDao.getBillsByRoom(roomId, sessionManager.getUserId());
     }
 
     public LiveData<List<BillWithRoomAndTenant>> getBillsWithDetailsByRoom(int roomId) {
-        return billDao.getBillsWithDetailsByRoom(roomId);
+        return billDao.getBillsWithDetailsByRoom(roomId, sessionManager.getUserId());
     }
 
     public LiveData<List<BillWithRoomAndTenant>> getAllBillsWithDetails() {
@@ -32,7 +32,7 @@ public class BillRepository {
     }
 
     public LiveData<BillWithRoomAndTenant> getBillWithDetailsById(int billId) {
-        return billDao.getBillWithDetailsById(billId);
+        return billDao.getBillWithDetailsById(billId, sessionManager.getUserId());
     }
 
     public void insert(BillEntity bill) {

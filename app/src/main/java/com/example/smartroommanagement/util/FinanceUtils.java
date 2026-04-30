@@ -73,4 +73,30 @@ public class FinanceUtils {
             return 0;
         }
     }
+
+    /**
+     * Parses a plain number input that may use either comma or dot as the decimal separator.
+     * Returns 0 when the value cannot be parsed.
+     */
+    public static double parsePlainNumber(String text) {
+        if (text == null) return 0;
+        String normalized = text.trim().replace(" ", "").replace(',', '.');
+        if (normalized.isEmpty()) return 0;
+        try {
+            return Double.parseDouble(normalized);
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    public static int parseIntegerOrDefault(String text, int defaultValue) {
+        if (text == null) return defaultValue;
+        String normalized = text.trim();
+        if (normalized.isEmpty()) return defaultValue;
+        try {
+            return Integer.parseInt(normalized);
+        } catch (Exception e) {
+            return defaultValue;
+        }
+    }
 }

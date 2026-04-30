@@ -77,17 +77,35 @@
                 tools:text="Cửa sổ hướng Đông, có điều hòa..." />
         </LinearLayout>
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_status"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="11sp"
-            android:textStyle="bold"
-            app:chipCornerRadius="12dp"
-            app:chipBackgroundColor="#ECFDF5"
-            android:textColor="#10B981"
-            app:chipStrokeWidth="0dp"
-            tools:text="Trống" />
+            android:orientation="vertical"
+            android:gravity="end">
+
+            <ImageButton
+                android:id="@+id/btn_more"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_more_vert"
+                android:contentDescription="Tùy chọn"
+                android:padding="8dp"
+                app:tint="#64748B" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                app:chipCornerRadius="12dp"
+                app:chipBackgroundColor="#ECFDF5"
+                android:textColor="#10B981"
+                app:chipStrokeWidth="0dp"
+                tools:text="Trống" />
+        </LinearLayout>
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

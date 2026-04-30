@@ -80,6 +80,13 @@ public class RoomDetailViewModel extends AndroidViewModel {
         tenantRepository.delete(tenant);
     }
 
+    public LiveData<Boolean> hasTenantsInRoom(int roomId) {
+        MutableLiveData<Boolean> result = new MutableLiveData<>();
+        AppDatabase.databaseWriteExecutor.execute(() ->
+                result.postValue(tenantRepository.countTenantsInRoom(roomId) > 0));
+        return result;
+    }
+
     public LiveData<List<BillEntity>> getBillsByRoom(int roomId) {
         return billRepository.getBillsByRoom(roomId);
     }

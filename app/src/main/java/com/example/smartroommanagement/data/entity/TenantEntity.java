@@ -86,12 +86,15 @@ public class TenantEntity {
                 Objects.equals(name, that.name) &&
                 Objects.equals(phone, that.phone) &&
                 Objects.equals(identityCard, that.identityCard) &&
+                Objects.equals(birthDate, that.birthDate) &&
+                Objects.equals(hometown, that.hometown) &&
+                Objects.equals(roomId, that.roomId) &&
                 Objects.equals(startDate, that.startDate) &&
                 Objects.equals(contractTerm, that.contractTerm);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, phone, identityCard, startDate, deposit, contractTerm, userId);
+        return Objects.hash(id, name, phone, identityCard, birthDate, hometown, roomId, startDate, deposit, contractTerm, userId);
     }
 }

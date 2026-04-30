@@ -60,6 +60,8 @@ public class RoomListActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        // Dùng nút 3 chấm để mở tùy chọn phòng, giữ long click làm dự phòng
+        adapter.setOnRoomMoreClickListener(this::showRoomOptionsDialog);
         adapter.setOnRoomLongClickListener(this::showRoomOptionsDialog);
 
         binding.fabAddRoom.setOnClickListener(v -> showRoomDialog(null));
@@ -99,42 +101,32 @@ public class RoomListActivity extends AppCompatActivity {
             filterRooms();
         });
 
-        // Khởi tạo UI filter ban đầu
         updateFilterUI();
     }
 
     private void updateFilterUI() {
-        // Màu mặc định (Chưa chọn)
         int defaultStroke = Color.parseColor("#F1F5F9");
         int defaultBg = Color.parseColor("#FFFFFF");
         int defaultText = Color.parseColor("#64748B");
-
-        // Màu Indigo (Chọn "Tất cả" hoặc "Đã thuê")
         int indigoStroke = Color.parseColor("#6366F1");
         int indigoBg = Color.parseColor("#EEF2FF");
         int indigoText = Color.parseColor("#6366F1");
-
-        // Màu Green (Chọn "Trống")
         int greenStroke = Color.parseColor("#10B981");
         int greenBg = Color.parseColor("#ECFDF5");
         int greenText = Color.parseColor("#10B981");
 
-        // Reset tất cả về mặc định
         binding.cardFilterAll.setStrokeColor(defaultStroke);
         binding.cardFilterAll.setCardBackgroundColor(defaultBg);
         binding.textAllLabel.setTextColor(defaultText);
-
         binding.cardFilterOccupied.setStrokeColor(defaultStroke);
         binding.cardFilterOccupied.setCardBackgroundColor(defaultBg);
         binding.textOccupiedCount.setTextColor(defaultText);
         binding.labelOccupied.setTextColor(defaultText);
-
         binding.cardFilterVacant.setStrokeColor(defaultStroke);
         binding.cardFilterVacant.setCardBackgroundColor(defaultBg);
         binding.textVacantCount.setTextColor(defaultText);
         binding.labelVacant.setTextColor(defaultText);
 
-        // Highlight mục đang được chọn
         switch (currentFilterStatus) {
             case "All":
                 binding.cardFilterAll.setStrokeColor(indigoStroke);
@@ -170,47 +162,24 @@ public class RoomListActivity extends AppCompatActivity {
     private void updateStatistics(List<RoomEntity> rooms) {
         long occupied = rooms.stream().filter(r -> "Đã thuê".equalsIgnoreCase(r.getStatus())).count();
         long vacant = rooms.size() - occupied;
-        
         binding.textOccupiedCount.setText(String.valueOf(occupied));
         binding.textVacantCount.setText(String.valueOf(vacant));
     }
 
     private void filterRooms() {
         List<RoomEntity> filteredList = new ArrayList<>(allRooms);
-
-        // 1. Lọc theo Category trạng thái
         if ("Occupied".equals(currentFilterStatus)) {
-            filteredList = filteredList.stream()
-                    .filter(room -> "Đã thuê".equalsIgnoreCase(room.getStatus()))
-                    .collect(Collectors.toList());
+            filteredList = filteredList.stream().filter(room -> "Đã thuê".equalsIgnoreCase(room.getStatus())).collect(Collectors.toList());
         } else if ("Vacant".equals(currentFilterStatus)) {
-            filteredList = filteredList.stream()
-                    .filter(room -> "Trống".equalsIgnoreCase(room.getStatus()))
-                    .collect(Collectors.toList());
+            filteredList = filteredList.stream().filter(room -> "Trống".equalsIgnoreCase(room.getStatus())).collect(Collectors.toList());
         }
-
-        // 2. Lọc theo tìm kiếm tên phòng
         if (!TextUtils.isEmpty(currentSearchQuery)) {
-            filteredList = filteredList.stream()
-                    .filter(room -> room.getName().toLowerCase().contains(currentSearchQuery))
-                    .collect(Collectors.toList());
+            filteredList = filteredList.stream().filter(room -> room.getName().toLowerCase().contains(currentSearchQuery)).collect(Collectors.toList());
         }
-
         adapter.submitList(filteredList);
-
-        // Hiển thị trạng thái trống nếu không có kết quả
         if (filteredList.isEmpty()) {
             binding.layoutEmptyState.setVisibility(View.VISIBLE);
             binding.recyclerViewRooms.setVisibility(View.GONE);
-            if (!TextUtils.isEmpty(currentSearchQuery) || !"All".equals(currentFilterStatus)) {
-                binding.textEmptyTitle.setText("Không tìm thấy kết quả");
-                binding.textEmptyDesc.setText("Thử đổi bộ lọc hoặc tìm tên phòng khác");
-                binding.btnAddFirstRoom.setVisibility(View.GONE);
-            } else {
-                binding.textEmptyTitle.setText("Chưa có phòng nào");
-                binding.textEmptyDesc.setText("Nhấn nút phía dưới để bắt đầu thêm phòng");
-                binding.btnAddFirstRoom.setVisibility(View.VISIBLE);
-            }
         } else {
             binding.layoutEmptyState.setVisibility(View.GONE);
             binding.recyclerViewRooms.setVisibility(View.VISIBLE);
@@ -220,41 +189,38 @@ public class RoomListActivity extends AppCompatActivity {
     private void showRoomOptionsDialog(RoomEntity room) {
         String[] options = {"Chỉnh sửa phòng", "Xóa phòng"};
         new AlertDialog.Builder(this)
-            .setTitle("Tùy chọn phòng " + room.getName())
+            .setTitle("Tùy chọn: " + room.getName())
             .setItems(options, (dialog, which) -> {
-                if (which == 0) {
-                    showRoomDialog(room);
-                } else {
-                    confirmDeleteRoom(room);
-                }
+                if (which == 0) showRoomDialog(room);
+                else confirmDeleteRoom(room);
             })
             .show();
     }
 
     private void confirmDeleteRoom(RoomEntity room) {
-        if (!"Trống".equalsIgnoreCase(room.getStatus())) {
-            Toast.makeText(this, "Không thể xóa phòng đang có khách thuê!", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        viewModel.hasTenantsInRoom(room.getId()).observe(this, hasTenants -> {
+            if (Boolean.TRUE.equals(hasTenants)) {
+                Toast.makeText(this, "Không thể xóa phòng đang có khách thuê!", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-        new AlertDialog.Builder(this)
-            .setTitle("Xác nhận xóa")
-            .setMessage("Bạn có chắc chắn muốn xóa phòng " + room.getName() + "?")
-            .setPositiveButton("Xóa", (d, w) -> viewModel.delete(room))
-            .setNegativeButton("Hủy", null)
-            .show();
+            new AlertDialog.Builder(this)
+                .setTitle("Xác nhận xóa")
+                .setMessage("Xóa phòng " + room.getName() + "?")
+                .setPositiveButton("Xóa", (d, w) -> viewModel.delete(room))
+                .setNegativeButton("Hủy", null)
+                .show();
+        });
     }
 
     private void showRoomDialog(RoomEntity existingRoom) {
         DialogAddRoomBinding db = DialogAddRoomBinding.inflate(getLayoutInflater());
         FinanceUtils.addCurrencyFormatter(db.editRoomPrice);
-        
         if (existingRoom != null) {
             db.editRoomName.setText(existingRoom.getName());
             db.editRoomPrice.setText(String.valueOf((int)existingRoom.getBasePrice()));
             db.editRoomDescription.setText(existingRoom.getDescription());
         }
-
         new AlertDialog.Builder(this)
             .setTitle(existingRoom == null ? "Thêm phòng mới" : "Chỉnh sửa phòng")
             .setView(db.getRoot())
@@ -262,24 +228,20 @@ public class RoomListActivity extends AppCompatActivity {
                 String name = db.editRoomName.getText().toString().trim();
                 String priceStr = db.editRoomPrice.getText().toString().trim();
                 String description = db.editRoomDescription.getText().toString().trim();
-
                 if (TextUtils.isEmpty(name) || TextUtils.isEmpty(priceStr)) {
-                    Toast.makeText(this, "Vui lòng nhập đủ tên và giá phòng", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
                 try {
                     double price = FinanceUtils.parseFormattedCurrency(priceStr);
-                    if (existingRoom == null) {
-                        viewModel.insert(new RoomEntity(name, price, "Trống", description));
-                    } else {
+                    if (existingRoom == null) viewModel.insert(new RoomEntity(name, price, "Trống", description));
+                    else {
                         RoomEntity updatedRoom = new RoomEntity(name, price, existingRoom.getStatus(), description);
                         updatedRoom.setId(existingRoom.getId());
+                        updatedRoom.setUserId(existingRoom.getUserId());
                         viewModel.update(updatedRoom);
                     }
-                } catch (Exception e) {
-                    Toast.makeText(this, "Lỗi định dạng giá", Toast.LENGTH_SHORT).show();
-                }
+                } catch (Exception e) { Toast.makeText(this, "Lỗi định dạng số", Toast.LENGTH_SHORT).show(); }
             })
             .setNegativeButton("Hủy", null)
             .show();
@@ -288,7 +250,7 @@ public class RoomListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            getOnBackPressedDispatcher().onBackPressed();
+            onBackPressed();
             return true;
         }
         return super.onOptionsItemSelected(item);

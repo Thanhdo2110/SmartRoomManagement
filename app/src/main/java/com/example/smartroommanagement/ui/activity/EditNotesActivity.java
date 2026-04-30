@@ -79,7 +79,7 @@ public class EditNotesActivity extends AppCompatActivity implements NoteAdapter.
             adapter.setNotes(allNotes);
         } else {
             List<NoteEntity> filtered = allNotes.stream()
-                    .filter(note -> note.getContent().toLowerCase().contains(query.toLowerCase()))
+                    .filter(note -> note.getContent() != null && note.getContent().toLowerCase().contains(query.toLowerCase()))
                     .collect(Collectors.toList());
             adapter.setNotes(filtered);
         }

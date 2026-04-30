@@ -18,6 +18,8 @@ import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.signature.ObjectKey;
 import com.example.smartroommanagement.data.entity.BillEntity;
 import com.example.smartroommanagement.data.entity.BillWithRoomAndTenant;
 import com.example.smartroommanagement.data.entity.RoomEntity;
@@ -25,6 +27,7 @@ import com.example.smartroommanagement.data.entity.TenantEntity;
 import com.example.smartroommanagement.data.entity.UserEntity;
 import com.example.smartroommanagement.databinding.ActivityRoomDetailBinding;
 import com.example.smartroommanagement.databinding.DialogAddBillBinding;
+import com.example.smartroommanagement.databinding.DialogAddRoomBinding;
 import com.example.smartroommanagement.databinding.DialogAddTenantBinding;
 import com.example.smartroommanagement.databinding.DialogBillDetailBinding;
 import com.example.smartroommanagement.databinding.DialogContractDetailBinding;
@@ -81,8 +84,19 @@ public class RoomDetailActivity extends AppCompatActivity {
 
         billAdapter = new BillAdapter();
         
-        // NHẤN GIỮ LỊCH SỬ HÓA ĐƠN ĐỂ HIỆN SỬA/XÓA
-        billAdapter.setOnBillLongClickListener(wrap -> showBillOptionsDialog(wrap.bill));
+        // SỬ DỤNG NÚT 3 CHẤM CHO HÓA ĐƠN
+        billAdapter.setOnBillMoreClickListener(wrap -> {
+            if (wrap.bill != null) {
+                showBillOptionsDialog(wrap.bill);
+            }
+        });
+        
+        // NHẤN GIỮ LỊCH SỬ HÓA ĐƠN ĐỂ HIỆN SỬA/XÓA (Dự phòng)
+        billAdapter.setOnBillLongClickListener(wrap -> {
+            if (wrap.bill != null) {
+                showBillOptionsDialog(wrap.bill);
+            }
+        });
 
         billAdapter.setOnBillClickListener(bill -> {
             List<Object> list = billAdapter.getCurrentList();
@@ -153,6 +167,48 @@ public class RoomDetailActivity extends AppCompatActivity {
         });
 
         binding.fabAddBill.setOnClickListener(v -> showAddBillDialog(null));
+
+        binding.cardRoomInfo.setOnClickListener(v -> {
+            if (currentRoom != null) {
+                showRoomDialog(currentRoom);
+            }
+        });
+    }
+
+    private void showRoomDialog(RoomEntity existingRoom) {
+        DialogAddRoomBinding db = DialogAddRoomBinding.inflate(getLayoutInflater());
+        FinanceUtils.addCurrencyFormatter(db.editRoomPrice);
+        
+        db.editRoomName.setText(existingRoom.getName());
+        db.editRoomPrice.setText(String.valueOf((int)existingRoom.getBasePrice()));
+        db.editRoomDescription.setText(existingRoom.getDescription());
+        
+        new AlertDialog.Builder(this)
+            .setTitle("Chỉnh sửa phòng")
+            .setView(db.getRoot())
+            .setPositiveButton("Lưu", (d, w) -> {
+                String name = db.editRoomName.getText().toString().trim();
+                String priceStr = db.editRoomPrice.getText().toString().trim();
+                String description = db.editRoomDescription.getText().toString().trim();
+                
+                if (TextUtils.isEmpty(name) || TextUtils.isEmpty(priceStr)) {
+                    Toast.makeText(this, "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                
+                try {
+                    double price = FinanceUtils.parseFormattedCurrency(priceStr);
+                    existingRoom.setName(name);
+                    existingRoom.setBasePrice(price);
+                    existingRoom.setDescription(description);
+                    viewModel.updateRoom(existingRoom);
+                    Toast.makeText(this, "Đã cập nhật thông tin phòng", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) { 
+                    Toast.makeText(this, "Lỗi định dạng số", Toast.LENGTH_SHORT).show(); 
+                }
+            })
+            .setNegativeButton("Hủy", null)
+            .show();
     }
 
     private void showBillDetailDialog(BillWithRoomAndTenant item) {
@@ -214,10 +270,17 @@ public class RoomDetailActivity extends AppCompatActivity {
 
         Glide.with(this)
                 .load(qrUrl)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .signature(new ObjectKey(qrUrl + System.currentTimeMillis()))
+                .placeholder(android.R.drawable.ic_menu_report_image)
+                .error(android.R.drawable.ic_menu_close_clear_cancel)
                 .listener(new com.bumptech.glide.request.RequestListener<android.graphics.drawable.Drawable>() {
                     @Override
                     public boolean onLoadFailed(@androidx.annotation.Nullable com.bumptech.glide.load.engine.GlideException e, Object model, com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable> target, boolean isFirstResource) {
                         db.progressQrBill.setVisibility(View.GONE);
+                        android.util.Log.e("QR_LOAD", "Failed URL: " + qrUrl);
+                        if (e != null) e.printStackTrace();
                         return false;
                     }
 

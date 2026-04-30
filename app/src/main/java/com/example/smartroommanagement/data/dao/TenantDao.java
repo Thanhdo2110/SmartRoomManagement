@@ -24,11 +24,14 @@ public interface TenantDao {
     @Delete
     void delete(TenantEntity tenant);
 
-    @Query("SELECT * FROM tenants WHERE roomId = :roomId")
-    LiveData<List<TenantEntity>> getTenantsByRoom(int roomId);
+    @Query("SELECT * FROM tenants WHERE roomId = :roomId AND userId = :userId")
+    LiveData<List<TenantEntity>> getTenantsByRoom(int roomId, int userId);
 
     @Query("SELECT * FROM tenants WHERE userId = :userId")
     LiveData<List<TenantEntity>> getAllTenants(int userId);
+
+    @Query("SELECT COUNT(*) FROM tenants WHERE roomId = :roomId AND userId = :userId")
+    int countTenantsInRoom(int roomId, int userId);
 
     @Transaction
     @Query("SELECT * FROM tenants WHERE userId = :userId")

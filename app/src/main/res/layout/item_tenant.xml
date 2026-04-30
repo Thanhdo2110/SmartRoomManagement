@@ -61,17 +61,34 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/text_room_name"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Phòng 101"
-                android:background="#EEF2FF"
-                android:textColor="#6366F1"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="6dp"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:gravity="end"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/btn_more_tenant"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_more_vert"
+                    android:contentDescription="Tùy chọn"
+                    app:tint="#64748B" />
+
+                <TextView
+                    android:id="@+id/text_room_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Phòng 101"
+                    android:background="#EEF2FF"
+                    android:textColor="#6366F1"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="6dp"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
 
         <View

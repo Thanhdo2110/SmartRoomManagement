@@ -59,17 +59,37 @@
                     android:textSize="14sp" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/text_bill_status"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Chưa thanh toán"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="4dp"
-                android:background="#FEF2F2"
-                android:textColor="#EF4444"
-                android:textSize="12sp"
-                android:textStyle="bold" />
+                android:gravity="end"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/btn_more_bill"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_more_vert"
+                    android:contentDescription="Tùy chọn"
+                    android:padding="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:tint="#64748B" />
+
+                <TextView
+                    android:id="@+id/text_bill_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chưa thanh toán"
+                    android:layout_marginTop="4dp"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="4dp"
+                    android:background="#FEF2F2"
+                    android:textColor="#EF4444"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
 
         <View
@@ -147,7 +167,6 @@
                 android:text="Quét QR"
                 app:icon="@android:drawable/ic_menu_camera" />
 
-            <!-- Nút Xác nhận thanh toán (Kích thước chuẩn) -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_mark_paid"
                 android:layout_width="wrap_content"
@@ -156,7 +175,6 @@
                 android:text="Thanh toán"
                 android:backgroundTint="#10B981" />
 
-            <!-- Nút Hủy thanh toán (Kích thước nhỏ - Sẽ được ẩn/hiện trong Adapter) -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_cancel_paid"
                 android:layout_width="wrap_content"

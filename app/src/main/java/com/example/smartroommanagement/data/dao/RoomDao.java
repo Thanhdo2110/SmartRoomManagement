@@ -27,8 +27,8 @@ public interface RoomDao {
     @Query("SELECT * FROM rooms WHERE userId = :userId ORDER BY name ASC")
     LiveData<List<RoomEntity>> getAllRooms(int userId);
 
-    @Query("SELECT * FROM rooms WHERE id = :id")
-    LiveData<RoomEntity> getRoomById(int id);
+    @Query("SELECT * FROM rooms WHERE id = :id AND userId = :userId LIMIT 1")
+    LiveData<RoomEntity> getRoomById(int id, int userId);
 
     @Transaction
     @Query("SELECT * FROM rooms WHERE userId = :userId ORDER BY name ASC")

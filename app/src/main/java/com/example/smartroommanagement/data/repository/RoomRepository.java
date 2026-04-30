@@ -42,7 +42,7 @@ public class RoomRepository {
     }
 
     public LiveData<RoomEntity> getRoomById(int id) {
-        return roomDao.getRoomById(id);
+        return roomDao.getRoomById(id, sessionManager.getUserId());
     }
 
     public LiveData<List<RoomWithTenants>> getRoomsWithTenants() {

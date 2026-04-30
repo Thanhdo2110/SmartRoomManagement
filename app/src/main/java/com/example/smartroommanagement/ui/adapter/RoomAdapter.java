@@ -25,6 +25,7 @@ public class RoomAdapter extends ListAdapter<RoomEntity, RoomAdapter.RoomViewHol
 
     private OnRoomClickListener listener;
     private OnRoomLongClickListener longClickListener;
+    private OnRoomMoreClickListener moreClickListener;
 
     public interface OnRoomClickListener {
         void onRoomClick(RoomEntity room);
@@ -34,12 +35,20 @@ public class RoomAdapter extends ListAdapter<RoomEntity, RoomAdapter.RoomViewHol
         void onRoomLongClick(RoomEntity room);
     }
 
+    public interface OnRoomMoreClickListener {
+        void onRoomMoreClick(RoomEntity room);
+    }
+
     public void setOnRoomClickListener(OnRoomClickListener listener) {
         this.listener = listener;
     }
 
     public void setOnRoomLongClickListener(OnRoomLongClickListener listener) {
         this.longClickListener = listener;
+    }
+
+    public void setOnRoomMoreClickListener(OnRoomMoreClickListener listener) {
+        this.moreClickListener = listener;
     }
 
     public RoomAdapter() {
@@ -78,6 +87,7 @@ public class RoomAdapter extends ListAdapter<RoomEntity, RoomAdapter.RoomViewHol
         private final Chip statusChip;
         private final ImageView iconRoom;
         private final MaterialCardView iconContainer;
+        private final View btnMore;
 
         public RoomViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -87,6 +97,7 @@ public class RoomAdapter extends ListAdapter<RoomEntity, RoomAdapter.RoomViewHol
             statusChip = itemView.findViewById(R.id.chip_status);
             iconRoom = itemView.findViewById(R.id.icon_room);
             iconContainer = itemView.findViewById(R.id.card_icon_container);
+            btnMore = itemView.findViewById(R.id.btn_more);
 
             itemView.setOnClickListener(v -> {
                 int pos = getAdapterPosition();
@@ -103,6 +114,15 @@ public class RoomAdapter extends ListAdapter<RoomEntity, RoomAdapter.RoomViewHol
                 }
                 return false;
             });
+
+            if (btnMore != null) {
+                btnMore.setOnClickListener(v -> {
+                    int pos = getAdapterPosition();
+                    if (moreClickListener != null && pos != RecyclerView.NO_POSITION) {
+                        moreClickListener.onRoomMoreClick(getItem(pos));
+                    }
+                });
+            }
         }
 
         public void bind(RoomEntity room) {

@@ -24,18 +24,18 @@ public interface BillDao {
     @Delete
     void delete(BillEntity bill);
 
-    @Query("SELECT * FROM bills WHERE roomId = :roomId ORDER BY id DESC")
-    LiveData<List<BillEntity>> getBillsByRoom(int roomId);
+    @Query("SELECT * FROM bills WHERE roomId = :roomId AND userId = :userId ORDER BY id DESC")
+    LiveData<List<BillEntity>> getBillsByRoom(int roomId, int userId);
 
     @Transaction
-    @Query("SELECT * FROM bills WHERE roomId = :roomId ORDER BY id DESC")
-    LiveData<List<BillWithRoomAndTenant>> getBillsWithDetailsByRoom(int roomId);
+    @Query("SELECT * FROM bills WHERE roomId = :roomId AND userId = :userId ORDER BY id DESC")
+    LiveData<List<BillWithRoomAndTenant>> getBillsWithDetailsByRoom(int roomId, int userId);
 
     @Transaction
     @Query("SELECT * FROM bills WHERE userId = :userId ORDER BY id DESC")
     LiveData<List<BillWithRoomAndTenant>> getAllBillsWithDetails(int userId);
 
     @Transaction
-    @Query("SELECT * FROM bills WHERE id = :billId")
-    LiveData<BillWithRoomAndTenant> getBillWithDetailsById(int billId);
+    @Query("SELECT * FROM bills WHERE id = :billId AND userId = :userId LIMIT 1")
+    LiveData<BillWithRoomAndTenant> getBillWithDetailsById(int billId, int userId);
 }

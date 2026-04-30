@@ -36,11 +36,14 @@
 
             <!-- Thông tin phòng -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_room_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="24dp"
                 app:cardElevation="4dp"
                 android:backgroundTint="#FFFFFF"
+                android:clickable="true"
+                android:focusable="true"
                 app:strokeWidth="0dp">
 
                 <LinearLayout

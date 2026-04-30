@@ -20,7 +20,7 @@ public class TenantRepository {
     }
 
     public LiveData<List<TenantEntity>> getTenantsByRoom(int roomId) {
-        return tenantDao.getTenantsByRoom(roomId);
+        return tenantDao.getTenantsByRoom(roomId, sessionManager.getUserId());
     }
 
     public LiveData<List<TenantEntity>> getAllTenants() {
@@ -29,6 +29,10 @@ public class TenantRepository {
 
     public LiveData<List<TenantWithRoom>> getAllTenantsWithRoom() {
         return tenantDao.getAllTenantsWithRoom(sessionManager.getUserId());
+    }
+
+    public int countTenantsInRoom(int roomId) {
+        return tenantDao.countTenantsInRoom(roomId, sessionManager.getUserId());
     }
 
     public void insert(TenantEntity tenant) {

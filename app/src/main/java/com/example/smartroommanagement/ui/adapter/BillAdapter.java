@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
@@ -24,6 +25,7 @@ public class BillAdapter extends ListAdapter<Object, BillAdapter.BillViewHolder>
     private OnBillActionListener actionListener;
     private OnBillClickListener clickListener;
     private OnBillLongClickListener longClickListener;
+    private OnBillMoreClickListener moreClickListener;
 
     public interface OnBillActionListener {
         void onBillClick(Object bill);
@@ -40,6 +42,10 @@ public class BillAdapter extends ListAdapter<Object, BillAdapter.BillViewHolder>
         void onBillLongClick(BillWithRoomAndTenant bill);
     }
 
+    public interface OnBillMoreClickListener {
+        void onBillMoreClick(BillWithRoomAndTenant bill);
+    }
+
     public void setOnBillActionListener(OnBillActionListener listener) {
         this.actionListener = listener;
     }
@@ -50,6 +56,10 @@ public class BillAdapter extends ListAdapter<Object, BillAdapter.BillViewHolder>
 
     public void setOnBillLongClickListener(OnBillLongClickListener listener) {
         this.longClickListener = listener;
+    }
+
+    public void setOnBillMoreClickListener(OnBillMoreClickListener listener) {
+        this.moreClickListener = listener;
     }
 
     public BillAdapter() {
@@ -104,12 +114,13 @@ public class BillAdapter extends ListAdapter<Object, BillAdapter.BillViewHolder>
     @Override
     public void onBindViewHolder(@NonNull BillViewHolder holder, int position) {
         Object item = getItem(position);
-        holder.bind(item, actionListener, clickListener, longClickListener);
+        holder.bind(item, actionListener, clickListener, longClickListener, moreClickListener);
     }
 
     static class BillViewHolder extends RecyclerView.ViewHolder {
         TextView roomName, month, status, electricity, water, tenant, total;
         MaterialButton btnShare, btnPay, btnPayQR, btnCancel;
+        ImageButton btnMore;
 
         public BillViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -124,9 +135,10 @@ public class BillAdapter extends ListAdapter<Object, BillAdapter.BillViewHolder>
             btnPay = itemView.findViewById(R.id.btn_mark_paid);
             btnPayQR = itemView.findViewById(R.id.btn_pay_qr);
             btnCancel = itemView.findViewById(R.id.btn_cancel_paid);
+            btnMore = itemView.findViewById(R.id.btn_more_bill);
         }
 
-        public void bind(Object item, OnBillActionListener actionListener, OnBillClickListener clickListener, OnBillLongClickListener longClickListener) {
+        public void bind(Object item, OnBillActionListener actionListener, OnBillClickListener clickListener, OnBillLongClickListener longClickListener, OnBillMoreClickListener moreClickListener) {
             Context context = itemView.getContext();
             NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
 
@@ -159,6 +171,14 @@ public class BillAdapter extends ListAdapter<Object, BillAdapter.BillViewHolder>
                     btnPayQR.setOnClickListener(v -> { if (actionListener != null) actionListener.onPayQR(fullItem); });
                 }
 
+                if (btnMore != null) {
+                    btnMore.setOnClickListener(v -> {
+                        if (moreClickListener != null) {
+                            moreClickListener.onBillMoreClick(fullItem);
+                        }
+                    });
+                }
+
                 itemView.setOnLongClickListener(v -> {
                     if (longClickListener != null) {
                         longClickListener.onBillLongClick(fullItem);
@@ -181,6 +201,16 @@ public class BillAdapter extends ListAdapter<Object, BillAdapter.BillViewHolder>
                 if (btnPayQR != null) btnPayQR.setVisibility(View.GONE);
                 btnPay.setVisibility(bill.isPaid() ? View.GONE : View.VISIBLE);
                 if (btnCancel != null) btnCancel.setVisibility(bill.isPaid() ? View.VISIBLE : View.GONE);
+
+                if (btnMore != null) {
+                    btnMore.setOnClickListener(v -> {
+                        if (moreClickListener != null) {
+                            BillWithRoomAndTenant wrap = new BillWithRoomAndTenant();
+                            wrap.bill = bill;
+                            moreClickListener.onBillMoreClick(wrap);
+                        }
+                    });
+                }
 
                 itemView.setOnLongClickListener(v -> {
                     if (longClickListener != null) {
