@@ -3,12 +3,15 @@ package com.example.smartroommanagement.ui.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -41,16 +44,25 @@ import com.example.smartroommanagement.util.SessionManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class BillManagementActivity extends AppCompatActivity {
+    private static final String FILTER_ALL = "all";
+    private static final String FILTER_PAID = "paid";
+    private static final String FILTER_UNPAID = "unpaid";
+
     private ActivityBillManagementBinding binding;
     private RoomDetailViewModel viewModel;
     private BillAdapter adapter;
     private boolean isOptimisticUpdateActive = false;
     private SessionManager sessionManager;
     private UserEntity currentUser;
+    private String currentFilter = FILTER_ALL;
+    private String currentSearchQuery = "";
+    private final List<BillWithRoomAndTenant> allBills = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +113,146 @@ public class BillManagementActivity extends AppCompatActivity {
                 showBillDetailDialog(item);
             }
         });
+
+        setupFilterListeners();
+        setupSearch();
+    }
+
+    private void setupSearch() {
+        binding.editSearchBill.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                currentSearchQuery = normalizeSearch(s == null ? "" : s.toString().trim());
+                applyBillFilter();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+    }
+
+    private void setupFilterListeners() {
+        binding.cardFilterAll.setOnClickListener(v -> selectBillFilter(FILTER_ALL));
+        binding.cardFilterPaid.setOnClickListener(v -> selectBillFilter(FILTER_PAID));
+        binding.cardFilterUnpaid.setOnClickListener(v -> selectBillFilter(FILTER_UNPAID));
+        updateFilterUi();
+    }
+
+    private void selectBillFilter(String filter) {
+        currentFilter = filter;
+        updateFilterUi();
+        applyBillFilter();
+    }
+
+    private void updateBillCounts() {
+        int paid = 0;
+        int unpaid = 0;
+        for (BillWithRoomAndTenant item : allBills) {
+            if (item.bill.isPaid()) paid++;
+            else unpaid++;
+        }
+        binding.textAllCount.setText(String.valueOf(allBills.size()));
+        binding.textPaidCount.setText(String.valueOf(paid));
+        binding.textUnpaidCount.setText(String.valueOf(unpaid));
+    }
+
+    private void applyBillFilter() {
+        List<Object> filtered = new ArrayList<>();
+        for (BillWithRoomAndTenant item : allBills) {
+            if (FILTER_PAID.equals(currentFilter) && !item.bill.isPaid()) continue;
+            if (FILTER_UNPAID.equals(currentFilter) && item.bill.isPaid()) continue;
+            if (!matchesBillSearch(item)) continue;
+            filtered.add(item);
+        }
+        adapter.submitList(filtered);
+    }
+
+    private boolean matchesBillSearch(BillWithRoomAndTenant item) {
+        if (TextUtils.isEmpty(currentSearchQuery)) {
+            return true;
+        }
+
+        String tenantName = item.bill.getTenantName();
+        if (TextUtils.isEmpty(tenantName) && item.tenant != null) {
+            tenantName = item.tenant.getName();
+        }
+
+        String roomName = item.room != null ? item.room.getName() : "phong " + item.bill.getRoomId();
+        String paymentStatus = item.bill.isPaid()
+                ? "da thanh toan đã thanh toán paid"
+                : "chua thanh toan chưa thanh toán unpaid";
+
+        String searchableText = roomName + " "
+                + safeText(tenantName) + " "
+                + safeText(item.bill.getMonthYear()) + " "
+                + item.bill.getId() + " "
+                + item.bill.getTotalAmount() + " "
+                + item.bill.getElectricityUsage() + " "
+                + item.bill.getWaterUsage() + " "
+                + paymentStatus;
+
+        return normalizeSearch(searchableText).contains(currentSearchQuery);
+    }
+
+    private String normalizeSearch(String value) {
+        String normalized = Normalizer.normalize(safeText(value), Normalizer.Form.NFD)
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
+                .replace('đ', 'd')
+                .replace('Đ', 'D');
+        return normalized.toLowerCase(Locale.ROOT);
+    }
+
+    private String safeText(String value) {
+        return value == null ? "" : value;
+    }
+
+    private void updateFilterUi() {
+        int defaultStroke = Color.parseColor("#F1F5F9");
+        int defaultBg = Color.parseColor("#FFFFFF");
+        int defaultText = Color.parseColor("#64748B");
+        int allColor = Color.parseColor("#6366F1");
+        int allBg = Color.parseColor("#EEF2FF");
+        int paidColor = Color.parseColor("#10B981");
+        int paidBg = Color.parseColor("#ECFDF5");
+        int unpaidColor = Color.parseColor("#EF4444");
+        int unpaidBg = Color.parseColor("#FEF2F2");
+
+        binding.cardFilterAll.setStrokeColor(defaultStroke);
+        binding.cardFilterAll.setCardBackgroundColor(defaultBg);
+        binding.labelFilterAll.setTextColor(defaultText);
+        binding.textAllCount.setTextColor(defaultText);
+
+        binding.cardFilterPaid.setStrokeColor(defaultStroke);
+        binding.cardFilterPaid.setCardBackgroundColor(defaultBg);
+        binding.labelFilterPaid.setTextColor(defaultText);
+        binding.textPaidCount.setTextColor(defaultText);
+
+        binding.cardFilterUnpaid.setStrokeColor(defaultStroke);
+        binding.cardFilterUnpaid.setCardBackgroundColor(defaultBg);
+        binding.labelFilterUnpaid.setTextColor(defaultText);
+        binding.textUnpaidCount.setTextColor(defaultText);
+
+        if (FILTER_PAID.equals(currentFilter)) {
+            binding.cardFilterPaid.setStrokeColor(paidColor);
+            binding.cardFilterPaid.setCardBackgroundColor(paidBg);
+            binding.labelFilterPaid.setTextColor(paidColor);
+            binding.textPaidCount.setTextColor(paidColor);
+        } else if (FILTER_UNPAID.equals(currentFilter)) {
+            binding.cardFilterUnpaid.setStrokeColor(unpaidColor);
+            binding.cardFilterUnpaid.setCardBackgroundColor(unpaidBg);
+            binding.labelFilterUnpaid.setTextColor(unpaidColor);
+            binding.textUnpaidCount.setTextColor(unpaidColor);
+        } else {
+            binding.cardFilterAll.setStrokeColor(allColor);
+            binding.cardFilterAll.setCardBackgroundColor(allBg);
+            binding.labelFilterAll.setTextColor(allColor);
+            binding.textAllCount.setTextColor(allColor);
+        }
     }
 
     private void showBillOptionsDialog(BillWithRoomAndTenant item) {
@@ -211,6 +363,11 @@ public class BillManagementActivity extends AppCompatActivity {
                         updatedBill.setOtherFee(other);
                         updatedBill.setOtherFeeNote(otherNote);
                         updatedBill.setTotalAmount(total);
+                        BillWithRoomAndTenant updatedItem = new BillWithRoomAndTenant();
+                        updatedItem.bill = updatedBill;
+                        updatedItem.room = item.room;
+                        updatedItem.tenant = item.tenant;
+                        replaceBillInMemory(updatedItem);
 
                         viewModel.updateBill(updatedBill);
                         Toast.makeText(this, "Đã cập nhật hóa đơn", Toast.LENGTH_SHORT).show();
@@ -226,7 +383,10 @@ public class BillManagementActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setTitle("Xác nhận xóa")
                 .setMessage("Bạn có chắc chắn muốn xóa hóa đơn này?")
-                .setPositiveButton("Xóa", (d, w) -> viewModel.deleteBill(bill))
+                .setPositiveButton("Xóa", (d, w) -> {
+                    removeBillFromMemory(bill.getId());
+                    viewModel.deleteBill(bill);
+                })
                 .setNegativeButton("Hủy", null)
                 .show();
     }
@@ -346,31 +506,49 @@ public class BillManagementActivity extends AppCompatActivity {
 
     private void performOptimisticUpdate(BillWithRoomAndTenant item) {
         isOptimisticUpdateActive = true;
-        List<Object> currentList = new ArrayList<>(adapter.getCurrentList());
-        int index = -1;
-        for (int i = 0; i < currentList.size(); i++) {
-            if (currentList.get(i) instanceof BillWithRoomAndTenant && ((BillWithRoomAndTenant) currentList.get(i)).bill.getId() == item.bill.getId()) {
-                index = i; break;
+        BillWithRoomAndTenant newItem = new BillWithRoomAndTenant();
+        newItem.bill = new BillEntity(item.bill);
+        newItem.bill.setPaid(!item.bill.isPaid());
+        newItem.room = item.room;
+        newItem.tenant = item.tenant;
+        replaceBillInMemory(newItem);
+        viewModel.updateBill(newItem.bill);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> isOptimisticUpdateActive = false, 800);
+    }
+
+    private void replaceBillInMemory(BillWithRoomAndTenant updatedItem) {
+        for (int i = 0; i < allBills.size(); i++) {
+            if (allBills.get(i).bill.getId() == updatedItem.bill.getId()) {
+                allBills.set(i, updatedItem);
+                updateBillCounts();
+                applyBillFilter();
+                return;
             }
         }
-        if (index != -1) {
-            BillWithRoomAndTenant newItem = new BillWithRoomAndTenant();
-            newItem.bill = new BillEntity(item.bill);
-            newItem.bill.setPaid(!item.bill.isPaid());
-            newItem.room = item.room;
-            newItem.tenant = item.tenant;
-            currentList.set(index, newItem);
-            adapter.submitList(currentList);
-            viewModel.updateBill(newItem.bill);
-            new Handler(Looper.getMainLooper()).postDelayed(() -> isOptimisticUpdateActive = false, 800);
+
+        allBills.add(0, updatedItem);
+        updateBillCounts();
+        applyBillFilter();
+    }
+
+    private void removeBillFromMemory(int billId) {
+        for (int i = allBills.size() - 1; i >= 0; i--) {
+            if (allBills.get(i).bill.getId() == billId) {
+                allBills.remove(i);
+            }
         }
+        updateBillCounts();
+        applyBillFilter();
     }
 
     private void setupViewModel() {
         viewModel = new ViewModelProvider(this).get(RoomDetailViewModel.class);
         viewModel.getAllBillsWithDetails().observe(this, bills -> {
             if (bills != null && !isOptimisticUpdateActive) {
-                adapter.submitList(new ArrayList<>(bills));
+                allBills.clear();
+                allBills.addAll(bills);
+                updateBillCounts();
+                applyBillFilter();
             }
         });
         viewModel.getUserById(sessionManager.getUserId()).observe(this, user -> currentUser = user);
