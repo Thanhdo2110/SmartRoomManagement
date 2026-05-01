@@ -5,14 +5,15 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -50,7 +51,6 @@ public class TenantListActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setupUI();
-        setupSearch();
         setupViewModel();
     }
 
@@ -76,27 +76,24 @@ public class TenantListActivity extends AppCompatActivity {
             }
             startActivity(intent);
         });
-    }
 
-    private void setupSearch() {
-        binding.searchTenants.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        // Xử lý tìm kiếm
+        binding.editSearchTenant.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                filterTenants(query);
-                return true;
-            }
-
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
-            public boolean onQueryTextChange(String newText) {
-                filterTenants(newText);
-                return true;
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterTenants(s.toString());
             }
+            @Override
+            public void afterTextChanged(Editable s) {}
         });
     }
 
     private void filterTenants(String query) {
         if (TextUtils.isEmpty(query)) {
             adapter.submitList(new ArrayList<>(fullTenantList));
+            binding.layoutEmptyState.setVisibility(fullTenantList.isEmpty() ? View.VISIBLE : View.GONE);
             return;
         }
 
@@ -114,6 +111,7 @@ public class TenantListActivity extends AppCompatActivity {
         }).collect(Collectors.toList());
 
         adapter.submitList(filteredList);
+        binding.layoutEmptyState.setVisibility(filteredList.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
     private String removeAccents(String s) {
@@ -128,13 +126,7 @@ public class TenantListActivity extends AppCompatActivity {
         viewModel.getAllTenantsWithRoom().observe(this, tenants -> {
             if (tenants != null) {
                 fullTenantList = new ArrayList<>(tenants);
-                // Nếu đang có search query thì filter lại, không thì hiện hết
-                String currentQuery = binding.searchTenants.getQuery().toString();
-                if (TextUtils.isEmpty(currentQuery)) {
-                    adapter.submitList(new ArrayList<>(fullTenantList));
-                } else {
-                    filterTenants(currentQuery);
-                }
+                filterTenants(binding.editSearchTenant.getText().toString());
             }
         });
     }
@@ -222,26 +214,22 @@ public class TenantListActivity extends AppCompatActivity {
             .setTitle("Cập nhật thông tin")
             .setView(db.getRoot())
             .setPositiveButton("Lưu", (d, w) -> {
-                String name = db.editTenantName.getText().toString().trim();
-                String phone = db.editTenantPhone.getText().toString().trim();
-                String identityCard = db.editTenantIdentity.getText().toString().trim();
-                String birthDate = db.editTenantBirthdate.getText().toString().trim();
-                String hometown = db.editTenantHometown.getText().toString().trim();
-                String startDate = db.editStartDate.getText().toString().trim();
-                double deposit = FinanceUtils.parseFormattedCurrency(db.editTenantDeposit.getText().toString());
+                // SỬ DỤNG COPY CONSTRUCTOR để tạo đối tượng mới hoàn toàn
+                // Giúp DiffUtil nhận diện thay đổi ngay lập tức
+                TenantEntity updatedTenant = new TenantEntity(tenant);
+                
+                updatedTenant.setName(db.editTenantName.getText().toString().trim());
+                updatedTenant.setPhone(db.editTenantPhone.getText().toString().trim());
+                updatedTenant.setIdentityCard(db.editTenantIdentity.getText().toString().trim());
+                updatedTenant.setBirthDate(db.editTenantBirthdate.getText().toString().trim());
+                updatedTenant.setHometown(db.editTenantHometown.getText().toString().trim());
+                updatedTenant.setStartDate(db.editStartDate.getText().toString().trim());
+                updatedTenant.setDeposit(FinanceUtils.parseFormattedCurrency(db.editTenantDeposit.getText().toString()));
+                
                 String termStr = db.editContractTerm.getText().toString();
-                int contractTerm = FinanceUtils.parseIntegerOrDefault(termStr, 12);
+                updatedTenant.setContractTerm(FinanceUtils.parseIntegerOrDefault(termStr, 12));
 
-                tenant.setName(name);
-                tenant.setPhone(phone);
-                tenant.setIdentityCard(identityCard);
-                tenant.setBirthDate(birthDate);
-                tenant.setHometown(hometown);
-                tenant.setStartDate(startDate);
-                tenant.setDeposit(deposit);
-                tenant.setContractTerm(contractTerm);
-
-                viewModel.updateTenant(tenant);
+                viewModel.updateTenant(updatedTenant);
                 Toast.makeText(this, "Đã cập nhật", Toast.LENGTH_SHORT).show();
             })
             .setNegativeButton("Hủy", null)

@@ -8,41 +8,89 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF">
+        android:background="#FFFFFF"
+        app:elevation="0dp"
+        app:liftOnScroll="true">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="?attr/homeAsUpIndicator"
             app:title="Quản lý khách thuê"
-            app:navigationIcon="?attr/homeAsUpIndicator" />
+            app:titleCentered="true"
+            app:titleTextAppearance="@style/TextAppearance.Material3.TitleLarge" />
 
-        <com.google.android.material.card.MaterialCardView
+        <!-- Ô Tìm kiếm -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/search_layout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="4dp"
             android:layout_marginBottom="12dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
-            app:strokeWidth="0dp">
+            app:hintEnabled="false"
+            app:startIconDrawable="@android:drawable/ic_menu_search"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+            app:boxBackgroundColor="#F1F5F9"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp">
 
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/search_tenants"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_search_tenant"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:iconifiedByDefault="false"
-                app:queryBackground="@android:color/transparent"
-                app:queryHint="Tìm tên, SĐT, CCCD hoặc phòng..." />
-        </com.google.android.material.card.MaterialCardView>
+                android:hint="Tìm theo tên hoặc SĐT..."
+                android:paddingVertical="10dp"
+                android:textSize="14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Trạng thái trống (Empty State) -->
+    <LinearLayout
+        android:id="@+id/layout_empty_state"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="32dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:alpha="0.2"
+            android:src="@drawable/ic_tenants_premium"
+            app:tint="#64748B" />
+
+        <TextView
+            android:id="@+id/text_empty_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Không tìm thấy khách thuê"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            android:textColor="#64748B" />
+
+        <TextView
+            android:id="@+id/text_empty_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Thử tìm tên khách khác"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:textColor="#94A3B8"
+            android:gravity="center" />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_tenants"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp"
         android:clipToPadding="false"
+        android:padding="12dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
