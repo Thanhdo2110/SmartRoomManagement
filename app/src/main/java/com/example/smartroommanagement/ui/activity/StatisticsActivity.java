@@ -86,18 +86,20 @@ public class StatisticsActivity extends AppCompatActivity {
         barChart.setDrawBarShadow(false);
         barChart.setHighlightFullBarEnabled(false);
         barChart.setNoDataText("Đang phân tích dữ liệu...");
+        barChart.setPinchZoom(false);
+        barChart.setScaleEnabled(false);
 
         XAxis xAxis = barChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1f);
-        xAxis.setLabelCount(12);
-        xAxis.setAxisMinimum(0.5f);
-        xAxis.setAxisMaximum(12.5f);
+        xAxis.setCenterAxisLabels(true);
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                return "T" + (int) value;
+                int month = (int) value;
+                if (month >= 1 && month <= 12) return "T" + month;
+                return "";
             }
         });
 
@@ -106,7 +108,7 @@ public class StatisticsActivity extends AppCompatActivity {
         leftAxis.setDrawGridLines(true);
         
         barChart.getAxisRight().setEnabled(false);
-        barChart.setAutoScaleMinMaxEnabled(true); // Tự động căn chỉnh trục Y theo giá trị tiền
+        barChart.setAutoScaleMinMaxEnabled(true);
         
         Legend legend = barChart.getLegend();
         legend.setEnabled(true);
@@ -180,21 +182,35 @@ public class StatisticsActivity extends AppCompatActivity {
     }
 
     private void updateBarChart(Map<Integer, double[]> monthlyMap) {
-        List<BarEntry> entries = new ArrayList<>();
+        List<BarEntry> paidEntries = new ArrayList<>();
+        List<BarEntry> unpaidEntries = new ArrayList<>();
         for (int i = 1; i <= 12; i++) {
             double[] v = monthlyMap.get(i);
-            entries.add(new BarEntry(i, new float[]{(float) v[0], (float) v[1]}));
+            paidEntries.add(new BarEntry(i, (float) v[0]));
+            unpaidEntries.add(new BarEntry(i, (float) v[1]));
         }
 
-        BarDataSet dataSet = new BarDataSet(entries, "Doanh thu");
-        dataSet.setColors(Color.parseColor("#10B981"), Color.parseColor("#EF4444"));
-        dataSet.setStackLabels(new String[]{"Đã thu", "Chưa thu"});
-        dataSet.setDrawValues(false);
+        BarDataSet paidDataSet = new BarDataSet(paidEntries, "Đã thu");
+        paidDataSet.setColor(Color.parseColor("#10B981"));
+        paidDataSet.setDrawValues(false);
 
-        BarData data = new BarData(dataSet);
-        data.setBarWidth(0.5f);
-        
+        BarDataSet unpaidDataSet = new BarDataSet(unpaidEntries, "Chưa thu");
+        unpaidDataSet.setColor(Color.parseColor("#EF4444"));
+        unpaidDataSet.setDrawValues(false);
+
+        float groupSpace = 0.2f;
+        float barSpace = 0.02f;
+        float barWidth = 0.38f;
+        // (barWidth + barSpace) * 2 + groupSpace = 1.0
+
+        BarData data = new BarData(paidDataSet, unpaidDataSet);
+        data.setBarWidth(barWidth);
+
         barChart.setData(data);
+        barChart.getXAxis().setAxisMinimum(1f);
+        barChart.getXAxis().setAxisMaximum(13f);
+        barChart.getXAxis().setLabelCount(12);
+        barChart.groupBars(1f, groupSpace, barSpace);
         barChart.notifyDataSetChanged();
         barChart.invalidate();
     }
