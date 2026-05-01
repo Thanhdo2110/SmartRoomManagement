@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,16 +28,20 @@ import com.example.smartroommanagement.util.FinanceUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class TenantListActivity extends AppCompatActivity {
     private ActivityTenantListBinding binding;
     private RoomDetailViewModel viewModel;
     private TenantAdapter adapter;
+    private List<TenantWithRoom> fullTenantList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +50,7 @@ public class TenantListActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setupUI();
+        setupSearch();
         setupViewModel();
     }
 
@@ -60,7 +66,6 @@ public class TenantListActivity extends AppCompatActivity {
         binding.recyclerViewTenants.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerViewTenants.setAdapter(adapter);
 
-        // Lắng nghe sự kiện click vào nút 3 chấm
         adapter.setOnTenantMoreClickListener(this::showTenantOptionsDialog);
 
         adapter.setOnTenantClickListener(tenantWithRoom -> {
@@ -70,6 +75,67 @@ public class TenantListActivity extends AppCompatActivity {
                 intent.putExtra(TenantDetailActivity.EXTRA_ROOM_ID, tenantWithRoom.room.getId());
             }
             startActivity(intent);
+        });
+    }
+
+    private void setupSearch() {
+        binding.searchTenants.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                filterTenants(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterTenants(newText);
+                return true;
+            }
+        });
+    }
+
+    private void filterTenants(String query) {
+        if (TextUtils.isEmpty(query)) {
+            adapter.submitList(new ArrayList<>(fullTenantList));
+            return;
+        }
+
+        String lowerCaseQuery = removeAccents(query.toLowerCase().trim());
+        List<TenantWithRoom> filteredList = fullTenantList.stream().filter(item -> {
+            String tenantName = removeAccents(item.tenant.getName().toLowerCase());
+            String phone = item.tenant.getPhone() != null ? item.tenant.getPhone() : "";
+            String identity = item.tenant.getIdentityCard() != null ? item.tenant.getIdentityCard() : "";
+            String roomName = item.room != null ? removeAccents(item.room.getName().toLowerCase()) : "";
+
+            return tenantName.contains(lowerCaseQuery) || 
+                   phone.contains(lowerCaseQuery) || 
+                   identity.contains(lowerCaseQuery) || 
+                   roomName.contains(lowerCaseQuery);
+        }).collect(Collectors.toList());
+
+        adapter.submitList(filteredList);
+    }
+
+    private String removeAccents(String s) {
+        if (s == null) return "";
+        String temp = Normalizer.normalize(s, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        return pattern.matcher(temp).replaceAll("").replace('đ', 'd').replace('Đ', 'D');
+    }
+
+    private void setupViewModel() {
+        viewModel = new ViewModelProvider(this).get(RoomDetailViewModel.class);
+        viewModel.getAllTenantsWithRoom().observe(this, tenants -> {
+            if (tenants != null) {
+                fullTenantList = new ArrayList<>(tenants);
+                // Nếu đang có search query thì filter lại, không thì hiện hết
+                String currentQuery = binding.searchTenants.getQuery().toString();
+                if (TextUtils.isEmpty(currentQuery)) {
+                    adapter.submitList(new ArrayList<>(fullTenantList));
+                } else {
+                    filterTenants(currentQuery);
+                }
+            }
         });
     }
 
@@ -166,35 +232,20 @@ public class TenantListActivity extends AppCompatActivity {
                 String termStr = db.editContractTerm.getText().toString();
                 int contractTerm = FinanceUtils.parseIntegerOrDefault(termStr, 12);
 
-                TenantEntity updatedTenant = new TenantEntity(name, phone, identityCard, birthDate, hometown,
-                        tenant.getRoomId(), startDate, deposit, tenant.getUserId());
-                updatedTenant.setId(tenant.getId());
-                updatedTenant.setContractTerm(contractTerm);
+                tenant.setName(name);
+                tenant.setPhone(phone);
+                tenant.setIdentityCard(identityCard);
+                tenant.setBirthDate(birthDate);
+                tenant.setHometown(hometown);
+                tenant.setStartDate(startDate);
+                tenant.setDeposit(deposit);
+                tenant.setContractTerm(contractTerm);
 
-                updateTenantInCurrentList(updatedTenant);
-                viewModel.updateTenant(updatedTenant);
+                viewModel.updateTenant(tenant);
                 Toast.makeText(this, "Đã cập nhật", Toast.LENGTH_SHORT).show();
             })
             .setNegativeButton("Hủy", null)
             .show();
-    }
-
-    private void updateTenantInCurrentList(TenantEntity updatedTenant) {
-        List<TenantWithRoom> currentList = adapter.getCurrentList();
-        List<TenantWithRoom> newList = new ArrayList<>(currentList.size());
-
-        for (TenantWithRoom item : currentList) {
-            if (item.tenant.getId() == updatedTenant.getId()) {
-                TenantWithRoom updatedItem = new TenantWithRoom();
-                updatedItem.tenant = updatedTenant;
-                updatedItem.room = item.room;
-                newList.add(updatedItem);
-            } else {
-                newList.add(item);
-            }
-        }
-
-        adapter.submitList(newList);
     }
 
     private void confirmDeleteTenant(TenantEntity tenant, RoomEntity room) {
@@ -214,12 +265,6 @@ public class TenantListActivity extends AppCompatActivity {
             })
             .setNegativeButton("Hủy", null)
             .show();
-    }
-
-    private void setupViewModel() {
-        viewModel = new ViewModelProvider(this).get(RoomDetailViewModel.class);
-        viewModel.getAllTenantsWithRoom().observe(this, tenants ->
-                adapter.submitList(tenants == null ? new ArrayList<>() : new ArrayList<>(tenants)));
     }
 
     @Override

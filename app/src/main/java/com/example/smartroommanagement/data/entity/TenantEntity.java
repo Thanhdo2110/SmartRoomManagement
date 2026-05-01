@@ -28,7 +28,7 @@ public class TenantEntity {
     private String startDate;    // Ngày bắt đầu thuê
     private double deposit;      // Tiền đặt cọc
     private Integer contractTerm; // Thời hạn hợp đồng (tháng)
-    private int userId; // ID của chủ trọ sở hữu khách thuê này
+    private int userId;
 
     public TenantEntity(String name, String phone, String identityCard, String birthDate, String hometown, Integer roomId, String startDate, double deposit, int userId) {
         this.name = name;
@@ -81,8 +81,8 @@ public class TenantEntity {
         if (o == null || getClass() != o.getClass()) return false;
         TenantEntity that = (TenantEntity) o;
         return id == that.id &&
-                userId == that.userId &&
                 Double.compare(that.deposit, deposit) == 0 &&
+                userId == that.userId &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(phone, that.phone) &&
                 Objects.equals(identityCard, that.identityCard) &&
