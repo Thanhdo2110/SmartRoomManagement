@@ -199,25 +199,58 @@ public class StatisticsActivity extends AppCompatActivity {
         barChart.invalidate();
     }
 
-    // Hàm parse mới: cực kỳ mạnh mẽ, tách mọi ký tự đặc biệt
+    // Parse tháng từ chuỗi có format dd/MM/yyyy hoặc MM/yyyy
     private int parseMonth(String str) {
         if (str == null) return -1;
-        String[] parts = str.split("[^0-9]+"); // Chỉ lấy các cụm số
+        String[] parts = str.split("[^0-9]+"); // Tách các cụm số
+        List<String> nums = new ArrayList<>();
         for (String p : parts) {
-            if (p.isEmpty()) continue;
-            int val = Integer.parseInt(p);
-            if (val >= 1 && val <= 12 && p.length() <= 2) return val;
+            if (!p.isEmpty()) nums.add(p);
+        }
+        if (nums.size() >= 3) {
+            // Format dd/MM/yyyy -> lấy phần tử thứ 2 (index 1) là tháng
+            try {
+                int val = Integer.parseInt(nums.get(1));
+                if (val >= 1 && val <= 12) return val;
+            } catch (NumberFormatException e) { /* ignore */ }
+        } else if (nums.size() == 2) {
+            // Format MM/yyyy -> lấy phần tử đầu tiên là tháng
+            try {
+                int val = Integer.parseInt(nums.get(0));
+                if (val >= 1 && val <= 12) return val;
+            } catch (NumberFormatException e) { /* ignore */ }
         }
         return -1;
     }
 
+    // Parse năm từ chuỗi có format dd/MM/yyyy hoặc MM/yyyy
     private int parseYear(String str) {
         if (str == null) return -1;
         String[] parts = str.split("[^0-9]+");
+        List<String> nums = new ArrayList<>();
+        for (String p : parts) {
+            if (!p.isEmpty()) nums.add(p);
+        }
+        if (nums.size() >= 3) {
+            // Format dd/MM/yyyy -> lấy phần tử thứ 3 (index 2) là năm
+            try {
+                int val = Integer.parseInt(nums.get(2));
+                if (val > 100) return val;
+            } catch (NumberFormatException e) { /* ignore */ }
+        } else if (nums.size() == 2) {
+            // Format MM/yyyy -> lấy phần tử thứ 2 là năm
+            try {
+                int val = Integer.parseInt(nums.get(1));
+                if (val > 100) return val;
+            } catch (NumberFormatException e) { /* ignore */ }
+        }
+        // Fallback: tìm số > 100 bất kỳ
         for (String p : parts) {
             if (p.isEmpty()) continue;
-            int val = Integer.parseInt(p);
-            if (val > 100) return val; // Năm thường là số lớn (2024, 2026...)
+            try {
+                int val = Integer.parseInt(p);
+                if (val > 100) return val;
+            } catch (NumberFormatException e) { /* ignore */ }
         }
         return -1;
     }

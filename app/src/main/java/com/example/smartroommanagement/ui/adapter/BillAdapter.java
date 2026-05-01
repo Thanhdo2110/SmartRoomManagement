@@ -145,7 +145,7 @@ public class BillAdapter extends ListAdapter<Object, BillAdapter.BillViewHolder>
             if (item instanceof BillWithRoomAndTenant) {
                 BillWithRoomAndTenant fullItem = (BillWithRoomAndTenant) item;
                 roomName.setText(fullItem.room != null ? fullItem.room.getName() : "Phòng --");
-                month.setText("Tháng " + fullItem.bill.getMonthYear());
+                month.setText(fullItem.bill.getMonthYear());
                 setPaidStatus(fullItem.bill.isPaid(), context);
                 electricity.setText("Điện: " + fullItem.bill.getElectricityUsage() + " số");
                 water.setText("Nước: " + fullItem.bill.getWaterUsage() + " khối");
@@ -190,7 +190,7 @@ public class BillAdapter extends ListAdapter<Object, BillAdapter.BillViewHolder>
             } else if (item instanceof BillEntity) {
                 BillEntity bill = (BillEntity) item;
                 roomName.setText("Phòng " + bill.getRoomId());
-                month.setText("Tháng " + bill.getMonthYear());
+                month.setText(bill.getMonthYear());
                 setPaidStatus(bill.isPaid(), context);
                 electricity.setText("Điện: " + bill.getElectricityUsage() + " số");
                 water.setText("Nước: " + bill.getWaterUsage() + " khối");

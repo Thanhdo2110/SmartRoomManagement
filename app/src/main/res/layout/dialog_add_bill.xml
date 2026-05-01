@@ -22,7 +22,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Tháng/Năm (ví dụ: 05/2024)"
+            android:hint="Ngày/Tháng/Năm (ví dụ: 30/06/2026)"
             android:layout_marginBottom="16dp">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_bill_month"
